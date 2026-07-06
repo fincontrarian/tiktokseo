@@ -42,11 +42,15 @@ Prerequisites: Node.js 20+, PostgreSQL 15+, Redis 7+ (local installs or Docker).
    docker run -d --name findable-redis -p 6379:6379 redis:7
    ```
 
-3. **Sync the database schema** (once models exist)
+3. **Sync the database schema and seed demo data**
 
    ```bash
    npx prisma migrate dev
+   npx prisma db seed
    ```
+
+   The seed adds two demo creators (`lanmoves`, `quietcardio`) plus fitness
+   niche benchmarks so the free audit works locally.
 
 4. **Run the dev server**
 
@@ -54,7 +58,8 @@ Prerequisites: Node.js 20+, PostgreSQL 15+, Redis 7+ (local installs or Docker).
    npm run dev
    ```
 
-   Open [http://localhost:3000](http://localhost:3000).
+   Open [http://localhost:3000](http://localhost:3000) and try
+   [/audit](http://localhost:3000/audit) with `@lanmoves`.
 
 ## Scripts
 
@@ -69,18 +74,25 @@ Prerequisites: Node.js 20+, PostgreSQL 15+, Redis 7+ (local installs or Docker).
 | `npm run typecheck`    | TypeScript, no emit              |
 | `npm test`             | Vitest unit tests (single run)   |
 | `npm run test:watch`   | Vitest in watch mode             |
+| `npm run test:e2e`     | Playwright E2E (needs seeded DB) |
+| `npm run db:seed`      | Seed demo creators + benchmarks  |
 
 ## Project layout
 
 ```
-app/          Routes (App Router). Server components by default.
+app/          Routes (App Router, /[locale] segment). Server components by default.
+components/   Shared UI (nav, footer, score dial, forms).
+e2e/          Playwright end-to-end tests.
+i18n/         next-intl routing/request config (en at root, /vi, /id).
 lib/          Shared code.
   data/       Repository functions — the only place Prisma is used.
   scoring/    Pure-TypeScript business logic, unit-tested with Vitest.
+  audit.ts    Request-cached audit loader (data + scoring).
   db.ts       Prisma client singleton.
   redis.ts    Redis client singleton.
+  rate-limit.ts  Redis fixed-window rate limiter.
 messages/     next-intl translation files (en.json, vi.json, id.json).
-prisma/       Prisma schema and migrations.
+prisma/       Prisma schema, migrations, and dev/E2E seed.
 public/       Static assets.
 ```
 

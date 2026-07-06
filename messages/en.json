@@ -1,1 +1,78 @@
-{}
+{
+  "nav": {
+    "features": "Features",
+    "freeTools": "Free tools",
+    "pricing": "Pricing",
+    "creators": "Creators",
+    "business": "Business",
+    "comingSoon": "Coming soon"
+  },
+  "footer": {
+    "disclaimer": "Findable is an independent analytics platform and is not affiliated with, endorsed by, or sponsored by TikTok or ByteDance Ltd.",
+    "language": "Language",
+    "rights": "© {year} Findable. All rights reserved."
+  },
+  "home": {
+    "metaTitle": "Findable — Get found in TikTok search",
+    "metaDescription": "Audit your TikTok profile, optimize for search, and track your rankings daily. Built on an index of 75M videos refreshed daily.",
+    "headline": "TikTok is a search engine.",
+    "headline2": "Get found on it.",
+    "sub": "Findable audits your profile against what people actually search, then tells you exactly what to fix.",
+    "cta": "Run a free audit",
+    "featuresTitle": "Why creators rank with Findable",
+    "feature1Title": "Audit",
+    "feature1Body": "Six search-visibility checks against your niche's real search keywords.",
+    "feature2Title": "Optimize",
+    "feature2Body": "Specific fixes with search volume attached — not generic advice.",
+    "feature3Title": "Track",
+    "feature3Body": "Daily ranking checks from our index of 75M videos, refreshed daily."
+  },
+  "pricing": {
+    "metaTitle": "Pricing — Findable",
+    "metaDescription": "Free audits for every creator. Paid plans for fresh data, full checks, and daily tracking.",
+    "title": "Pricing",
+    "sub": "Free audits for everyone. Fresh data and daily tracking for those who want to win.",
+    "comingSoon": "Plans are coming soon. Run a free audit in the meantime."
+  },
+  "audit": {
+    "metaTitle": "Free TikTok SEO audit — Findable",
+    "metaDescription": "TikTok is a search engine. Check how findable your profile is in 10 seconds — free, no signup.",
+    "headline": "TikTok is a search engine.",
+    "headline2": "Get found on it.",
+    "sub": "Enter your handle. We check your profile against what your niche actually searches for.",
+    "inputLabel": "Your TikTok handle",
+    "inputPlaceholder": "@yourhandle",
+    "cta": "Audit my profile",
+    "invalidHandle": "That doesn't look like a TikTok handle — use letters, numbers, dots, or underscores.",
+    "disclaimerShort": "Free · No signup to see your score"
+  },
+  "result": {
+    "metaTitle": "@{handle} scores {score}/100 on TikTok search — Findable",
+    "metaDescription": "Findable audited @{handle} for TikTok search visibility: {score}/100 (grade {grade}). Run your own free audit.",
+    "scoreLabel": "Search visibility score",
+    "gradeLabel": "Grade",
+    "auditedIntro": "How findable @{handle} is in TikTok search",
+    "fixesTitle": "Start with these fixes",
+    "passedTitle": "What's working",
+    "lockedTitle": "{count} more checks in your full report",
+    "lockedSub": "Hashtag mix, cadence, engagement quality and more — with exact fixes. Free, just tell us where to send it.",
+    "emailPlaceholder": "you@email.com",
+    "unlockCta": "Unlock full report",
+    "unlockSuccess": "You're in — full report unlocked below.",
+    "invalidEmail": "That email doesn't look right — mind checking it?",
+    "shareHint": "Share your score — the link preview shows your dial.",
+    "auditAnother": "Audit another profile",
+    "notFoundTitle": "@{handle} isn't in our index yet",
+    "notFoundSub": "We're indexing this profile now. Leave your email and we'll send the audit as soon as it's ready — usually within a day.",
+    "notifyCta": "Email me the audit",
+    "notifySuccess": "Got it — we'll email you when @{handle}'s audit is ready.",
+    "rateLimitTitle": "That's a lot of audits!",
+    "rateLimitSub": "You've hit the free limit of {limit} audits per hour. Grab a coffee and come back in a bit — your audits will be waiting.",
+    "backToAudit": "Back to the audit tool",
+    "checkStatus": {
+      "pass": "Pass",
+      "warn": "Needs work",
+      "fail": "Fix this"
+    }
+  }
+}

@@ -1,8 +1,9 @@
 // Prisma schema for Findable.
 //
-// The index tables (videos, profiles, historical engagement stats) are
-// populated by the internal ingestion pipeline and read by this app.
-// Models will be added as features are built.
+// Creator, Video, NicheKeyword, and NicheBenchmark are part of our index —
+// populated by the internal ingestion pipeline and READ by this app.
+// Metadata only: captions, hashtags, counts, URLs, public profile fields.
+// Lead is the only table this app writes to today.
 //
 // The database connection URL lives in prisma.config.ts (Prisma 7+).
 
@@ -13,4 +14,64 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+model Creator {
+  id            String   @id @default(cuid())
+  handle        String   @unique
+  displayName   String
+  bio           String
+  followerCount Int
+  niche         String
+  videos        Video[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([niche])
+}
+
+model Video {
+  id        String   @id @default(cuid())
+  creatorId String
+  creator   Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  caption   String
+  hashtags  String[]
+  postedAt  DateTime
+  views     Int
+  likes     Int
+  comments  Int
+  bookmarks Int
+  url       String?
+
+  @@index([creatorId, postedAt(sort: Desc)])
+}
+
+model NicheKeyword {
+  id            String @id @default(cuid())
+  niche         String
+  keyword       String
+  monthlyVolume Int
+  rank          Int
+
+  @@unique([niche, keyword])
+  @@index([niche, rank])
+}
+
+model NicheBenchmark {
+  niche                String @id
+  medianPostsPerWeek   Float
+  medianEngagementRate Float
+  medianSaveRate       Float
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  email     String
+  handle    String?
+  source    String
+  locale    String   @default("en")
+  createdAt DateTime @default(now())
+
+  @@unique([email, source])
+  @@index([createdAt])
 }

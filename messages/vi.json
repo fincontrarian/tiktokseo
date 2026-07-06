@@ -1,1 +1,78 @@
-{}
+{
+  "nav": {
+    "features": "Tính năng",
+    "freeTools": "Công cụ miễn phí",
+    "pricing": "Bảng giá",
+    "creators": "Nhà sáng tạo",
+    "business": "Doanh nghiệp",
+    "comingSoon": "Sắp ra mắt"
+  },
+  "footer": {
+    "disclaimer": "Findable là nền tảng phân tích độc lập, không liên kết, không được chứng thực hay tài trợ bởi TikTok hoặc ByteDance Ltd.",
+    "language": "Ngôn ngữ",
+    "rights": "© {year} Findable. Bảo lưu mọi quyền."
+  },
+  "home": {
+    "metaTitle": "Findable — Được tìm thấy trên TikTok",
+    "metaDescription": "Kiểm tra hồ sơ TikTok, tối ưu cho tìm kiếm và theo dõi thứ hạng mỗi ngày. Dựa trên chỉ mục 75 triệu video, cập nhật hằng ngày.",
+    "headline": "TikTok là một công cụ tìm kiếm.",
+    "headline2": "Hãy để mọi người tìm thấy bạn.",
+    "sub": "Findable kiểm tra hồ sơ của bạn dựa trên những gì mọi người thực sự tìm kiếm, rồi chỉ rõ bạn cần sửa gì.",
+    "cta": "Kiểm tra miễn phí",
+    "featuresTitle": "Vì sao nhà sáng tạo chọn Findable",
+    "feature1Title": "Kiểm tra",
+    "feature1Body": "Sáu bài kiểm tra khả năng hiển thị dựa trên từ khóa tìm kiếm thật trong ngách của bạn.",
+    "feature2Title": "Tối ưu",
+    "feature2Body": "Gợi ý sửa cụ thể kèm lượng tìm kiếm — không phải lời khuyên chung chung.",
+    "feature3Title": "Theo dõi",
+    "feature3Body": "Kiểm tra thứ hạng hằng ngày từ chỉ mục 75 triệu video, cập nhật mỗi ngày."
+  },
+  "pricing": {
+    "metaTitle": "Bảng giá — Findable",
+    "metaDescription": "Kiểm tra miễn phí cho mọi nhà sáng tạo. Gói trả phí cho dữ liệu mới và theo dõi hằng ngày.",
+    "title": "Bảng giá",
+    "sub": "Kiểm tra miễn phí cho tất cả. Dữ liệu mới và theo dõi hằng ngày cho ai muốn bứt phá.",
+    "comingSoon": "Các gói sẽ sớm ra mắt. Trong lúc chờ, hãy chạy một bài kiểm tra miễn phí."
+  },
+  "audit": {
+    "metaTitle": "Kiểm tra TikTok SEO miễn phí — Findable",
+    "metaDescription": "TikTok là một công cụ tìm kiếm. Xem hồ sơ của bạn dễ được tìm thấy đến đâu trong 10 giây — miễn phí, không cần đăng ký.",
+    "headline": "TikTok là một công cụ tìm kiếm.",
+    "headline2": "Hãy để mọi người tìm thấy bạn.",
+    "sub": "Nhập handle của bạn. Chúng tôi so hồ sơ của bạn với những gì ngách của bạn thực sự tìm kiếm.",
+    "inputLabel": "Handle TikTok của bạn",
+    "inputPlaceholder": "@handle-cua-ban",
+    "cta": "Kiểm tra hồ sơ của tôi",
+    "invalidHandle": "Handle này có vẻ chưa đúng — chỉ dùng chữ cái, số, dấu chấm hoặc gạch dưới.",
+    "disclaimerShort": "Miễn phí · Không cần đăng ký để xem điểm"
+  },
+  "result": {
+    "metaTitle": "@{handle} đạt {score}/100 điểm tìm kiếm TikTok — Findable",
+    "metaDescription": "Findable đã kiểm tra @{handle} về khả năng hiển thị trên tìm kiếm TikTok: {score}/100 (hạng {grade}). Hãy tự kiểm tra miễn phí.",
+    "scoreLabel": "Điểm khả năng được tìm thấy",
+    "gradeLabel": "Xếp hạng",
+    "auditedIntro": "Mức độ dễ tìm thấy của @{handle} trên tìm kiếm TikTok",
+    "fixesTitle": "Bắt đầu với những việc này",
+    "passedTitle": "Điểm mạnh của bạn",
+    "lockedTitle": "Còn {count} mục kiểm tra trong báo cáo đầy đủ",
+    "lockedSub": "Chiến lược hashtag, tần suất đăng, chất lượng tương tác và hơn thế — kèm cách sửa cụ thể. Miễn phí, chỉ cần cho chúng tôi biết gửi về đâu.",
+    "emailPlaceholder": "ban@email.com",
+    "unlockCta": "Mở khóa báo cáo đầy đủ",
+    "unlockSuccess": "Xong — báo cáo đầy đủ đã mở khóa bên dưới.",
+    "invalidEmail": "Email này có vẻ chưa đúng — bạn kiểm tra lại nhé?",
+    "shareHint": "Chia sẻ điểm của bạn — bản xem trước liên kết sẽ hiển thị vòng điểm.",
+    "auditAnother": "Kiểm tra hồ sơ khác",
+    "notFoundTitle": "@{handle} chưa có trong chỉ mục của chúng tôi",
+    "notFoundSub": "Chúng tôi đang lập chỉ mục hồ sơ này. Để lại email và chúng tôi sẽ gửi kết quả ngay khi sẵn sàng — thường trong vòng một ngày.",
+    "notifyCta": "Gửi kết quả qua email",
+    "notifySuccess": "Đã nhận — chúng tôi sẽ email cho bạn khi kết quả của @{handle} sẵn sàng.",
+    "rateLimitTitle": "Bạn kiểm tra hơi nhiều rồi đó!",
+    "rateLimitSub": "Bạn đã chạm giới hạn miễn phí {limit} lượt mỗi giờ. Nghỉ một chút rồi quay lại nhé — kết quả vẫn sẽ chờ bạn.",
+    "backToAudit": "Quay lại công cụ kiểm tra",
+    "checkStatus": {
+      "pass": "Đạt",
+      "warn": "Cần cải thiện",
+      "fail": "Cần sửa ngay"
+    }
+  }
+}

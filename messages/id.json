@@ -1,1 +1,78 @@
-{}
+{
+  "nav": {
+    "features": "Fitur",
+    "freeTools": "Alat gratis",
+    "pricing": "Harga",
+    "creators": "Kreator",
+    "business": "Bisnis",
+    "comingSoon": "Segera hadir"
+  },
+  "footer": {
+    "disclaimer": "Findable adalah platform analitik independen dan tidak berafiliasi dengan, didukung oleh, atau disponsori oleh TikTok maupun ByteDance Ltd.",
+    "language": "Bahasa",
+    "rights": "© {year} Findable. Hak cipta dilindungi."
+  },
+  "home": {
+    "metaTitle": "Findable — Ditemukan di pencarian TikTok",
+    "metaDescription": "Audit profil TikTok-mu, optimalkan untuk pencarian, dan pantau peringkat setiap hari. Berbasis indeks 75 juta video yang diperbarui harian.",
+    "headline": "TikTok adalah mesin pencari.",
+    "headline2": "Pastikan kamu ditemukan.",
+    "sub": "Findable mengaudit profilmu berdasarkan apa yang benar-benar dicari orang, lalu memberi tahu persis apa yang perlu diperbaiki.",
+    "cta": "Audit gratis sekarang",
+    "featuresTitle": "Kenapa kreator naik peringkat dengan Findable",
+    "feature1Title": "Audit",
+    "feature1Body": "Enam pemeriksaan visibilitas pencarian berdasarkan kata kunci asli di niche-mu.",
+    "feature2Title": "Optimalkan",
+    "feature2Body": "Perbaikan spesifik lengkap dengan volume pencarian — bukan saran umum.",
+    "feature3Title": "Pantau",
+    "feature3Body": "Pemeriksaan peringkat harian dari indeks 75 juta video, diperbarui setiap hari."
+  },
+  "pricing": {
+    "metaTitle": "Harga — Findable",
+    "metaDescription": "Audit gratis untuk semua kreator. Paket berbayar untuk data terbaru dan pemantauan harian.",
+    "title": "Harga",
+    "sub": "Audit gratis untuk semua. Data terbaru dan pemantauan harian untuk yang ingin menang.",
+    "comingSoon": "Paket segera hadir. Sementara itu, jalankan audit gratis."
+  },
+  "audit": {
+    "metaTitle": "Audit TikTok SEO gratis — Findable",
+    "metaDescription": "TikTok adalah mesin pencari. Cek seberapa mudah profilmu ditemukan dalam 10 detik — gratis, tanpa daftar.",
+    "headline": "TikTok adalah mesin pencari.",
+    "headline2": "Pastikan kamu ditemukan.",
+    "sub": "Masukkan handle-mu. Kami membandingkan profilmu dengan apa yang benar-benar dicari di niche-mu.",
+    "inputLabel": "Handle TikTok kamu",
+    "inputPlaceholder": "@handlekamu",
+    "cta": "Audit profil saya",
+    "invalidHandle": "Handle itu sepertinya tidak valid — gunakan huruf, angka, titik, atau garis bawah.",
+    "disclaimerShort": "Gratis · Tanpa daftar untuk melihat skor"
+  },
+  "result": {
+    "metaTitle": "@{handle} meraih skor {score}/100 di pencarian TikTok — Findable",
+    "metaDescription": "Findable mengaudit @{handle} untuk visibilitas pencarian TikTok: {score}/100 (nilai {grade}). Jalankan audit gratismu sendiri.",
+    "scoreLabel": "Skor visibilitas pencarian",
+    "gradeLabel": "Nilai",
+    "auditedIntro": "Seberapa mudah @{handle} ditemukan di pencarian TikTok",
+    "fixesTitle": "Mulai dari perbaikan ini",
+    "passedTitle": "Yang sudah bagus",
+    "lockedTitle": "{count} pemeriksaan lagi di laporan lengkapmu",
+    "lockedSub": "Strategi hashtag, ritme posting, kualitas engagement, dan lainnya — dengan perbaikan persis. Gratis, cukup beri tahu ke mana harus dikirim.",
+    "emailPlaceholder": "kamu@email.com",
+    "unlockCta": "Buka laporan lengkap",
+    "unlockSuccess": "Beres — laporan lengkap terbuka di bawah.",
+    "invalidEmail": "Email itu sepertinya tidak valid — coba periksa lagi?",
+    "shareHint": "Bagikan skormu — pratinjau tautan menampilkan dial skormu.",
+    "auditAnother": "Audit profil lain",
+    "notFoundTitle": "@{handle} belum ada di indeks kami",
+    "notFoundSub": "Kami sedang mengindeks profil ini. Tinggalkan email dan kami kirim hasil auditnya begitu siap — biasanya dalam sehari.",
+    "notifyCta": "Kirim audit ke email saya",
+    "notifySuccess": "Siap — kami akan mengirim email saat audit @{handle} selesai.",
+    "rateLimitTitle": "Auditnya banyak sekali!",
+    "rateLimitSub": "Kamu sudah mencapai batas gratis {limit} audit per jam. Istirahat sebentar dan kembali lagi nanti — auditmu tetap menunggu.",
+    "backToAudit": "Kembali ke alat audit",
+    "checkStatus": {
+      "pass": "Lolos",
+      "warn": "Perlu perbaikan",
+      "fail": "Perbaiki ini"
+    }
+  }
+}
