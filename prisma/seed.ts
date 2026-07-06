@@ -7,6 +7,7 @@
  */
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
+import Redis from "ioredis";
 import { PrismaClient } from "../lib/generated/prisma/client";
 
 const prisma = new PrismaClient({
@@ -65,6 +66,239 @@ async function upsertCreator(
   return creator;
 }
 
+/**
+ * Keyword seed set. slope: daily views trend (+ rising, - falling);
+ * base: current daily total views scale; videos: current video count scale.
+ */
+interface SeedKeyword {
+  term: string;
+  locale: "en" | "vi" | "id";
+  base: number;
+  videos: number;
+  slope: number;
+}
+
+const KEYWORDS: SeedKeyword[] = [
+  {
+    term: "home workout",
+    locale: "en",
+    base: 62_000_000,
+    videos: 48_000,
+    slope: 0.004,
+  },
+  {
+    term: "workout at home",
+    locale: "en",
+    base: 41_000_000,
+    videos: 36_500,
+    slope: 0.002,
+  },
+  {
+    term: "fat burning",
+    locale: "en",
+    base: 28_000_000,
+    videos: 29_000,
+    slope: -0.005,
+  },
+  {
+    term: "morning routine",
+    locale: "en",
+    base: 24_500_000,
+    videos: 22_000,
+    slope: 0.0004,
+  },
+  {
+    term: "hiit for beginners",
+    locale: "en",
+    base: 12_400_000,
+    videos: 9_800,
+    slope: 0.009,
+  },
+  {
+    term: "no equipment workout",
+    locale: "en",
+    base: 10_100_000,
+    videos: 8_100,
+    slope: 0.003,
+  },
+  {
+    term: "apartment friendly workout",
+    locale: "en",
+    base: 3_600_000,
+    videos: 2_400,
+    slope: 0.006,
+  },
+  {
+    term: "dumbbell legs",
+    locale: "en",
+    base: 2_700_000,
+    videos: 2_050,
+    slope: -0.002,
+  },
+  {
+    term: "standing abs",
+    locale: "en",
+    base: 1_900_000,
+    videos: 1_500,
+    slope: 0.008,
+  },
+  {
+    term: "quiet cardio",
+    locale: "en",
+    base: 950_000,
+    videos: 640,
+    slope: 0.012,
+  },
+  {
+    term: "bài tập tại nhà",
+    locale: "vi",
+    base: 18_500_000,
+    videos: 15_200,
+    slope: 0.007,
+  },
+  {
+    term: "giảm mỡ bụng",
+    locale: "vi",
+    base: 14_800_000,
+    videos: 12_400,
+    slope: 0.005,
+  },
+  {
+    term: "tập gym tại nhà",
+    locale: "vi",
+    base: 7_400_000,
+    videos: 6_000,
+    slope: 0.001,
+  },
+  {
+    term: "yoga cho người mới",
+    locale: "vi",
+    base: 4_100_000,
+    videos: 3_300,
+    slope: 0.004,
+  },
+  {
+    term: "cardio tại nhà",
+    locale: "vi",
+    base: 3_200_000,
+    videos: 2_700,
+    slope: -0.006,
+  },
+  {
+    term: "ăn kiêng khoa học",
+    locale: "vi",
+    base: 2_100_000,
+    videos: 1_650,
+    slope: 0.002,
+  },
+  {
+    term: "tập bụng 7 phút",
+    locale: "vi",
+    base: 1_300_000,
+    videos: 990,
+    slope: 0.01,
+  },
+  {
+    term: "olahraga di rumah",
+    locale: "id",
+    base: 16_200_000,
+    videos: 13_100,
+    slope: 0.006,
+  },
+  {
+    term: "diet sehat",
+    locale: "id",
+    base: 11_500_000,
+    videos: 9_400,
+    slope: 0.003,
+  },
+  {
+    term: "latihan perut",
+    locale: "id",
+    base: 5_900_000,
+    videos: 4_800,
+    slope: 0.001,
+  },
+  {
+    term: "kardio ringan",
+    locale: "id",
+    base: 2_800_000,
+    videos: 2_200,
+    slope: -0.007,
+  },
+  {
+    term: "yoga pemula",
+    locale: "id",
+    base: 2_300_000,
+    videos: 1_800,
+    slope: 0.005,
+  },
+  {
+    term: "workout tanpa alat",
+    locale: "id",
+    base: 1_700_000,
+    videos: 1_300,
+    slope: 0.009,
+  },
+  {
+    term: "gerakan pemanasan",
+    locale: "id",
+    base: 900_000,
+    videos: 700,
+    slope: 0.0,
+  },
+];
+
+const HISTORY_DAYS = 75;
+
+/** Deterministic wobble so re-seeding is idempotent (no Math.random). */
+function wobble(seed: number, day: number): number {
+  return Math.sin(seed * 12.9898 + day * 0.61803) * 0.015;
+}
+
+async function seedKeywords() {
+  for (const [index, kw] of KEYWORDS.entries()) {
+    const keyword = await prisma.keyword.upsert({
+      where: { locale_term: { locale: kw.locale, term: kw.term } },
+      create: { locale: kw.locale, term: kw.term },
+      update: {},
+    });
+    await prisma.keywordStatDaily.deleteMany({
+      where: { keywordId: keyword.id },
+    });
+    const stats = Array.from({ length: HISTORY_DAYS }, (_, i) => {
+      const age = HISTORY_DAYS - 1 - i; // days ago; last entry = today
+      // Walk the trend back from today's base, plus deterministic noise.
+      const trend = 1 / (1 + kw.slope * age);
+      const noisy = trend * (1 + wobble(index + 1, age));
+      const date = new Date(Date.now() - age * DAY);
+      date.setUTCHours(0, 0, 0, 0);
+      return {
+        keywordId: keyword.id,
+        date,
+        videoCount: Math.max(1, Math.round(kw.videos * noisy)),
+        totalViews: BigInt(Math.max(1, Math.round(kw.base * noisy))),
+      };
+    });
+    await prisma.keywordStatDaily.createMany({ data: stats });
+  }
+}
+
+/** Backfill the (video, hashtag) join table from Video.hashtags arrays. */
+async function seedVideoHashtags() {
+  await prisma.videoHashtag.deleteMany({});
+  const videos = await prisma.video.findMany({
+    select: { id: true, hashtags: true },
+  });
+  const rows = videos.flatMap((video) =>
+    [...new Set(video.hashtags)].map((hashtag) => ({
+      videoId: video.id,
+      hashtag,
+    })),
+  );
+  await prisma.videoHashtag.createMany({ data: rows });
+}
+
 async function main() {
   await prisma.nicheBenchmark.upsert({
     where: { niche: "fitness" },
@@ -116,6 +350,27 @@ async function main() {
     })),
   );
 
+  // Archive creator: older videos (35-90 days back) so recency-gated views
+  // (free tier reads data >30 days old) still have hashtag co-occurrence.
+  await upsertCreator(
+    {
+      handle: "fitarchive",
+      displayName: "Fit Archive | Home Workout Library",
+      bio: "Home workout and quiet cardio archive. Standing abs, fat burning, all of it.",
+      followerCount: 18_900,
+      niche: "fitness",
+    },
+    Array.from({ length: 12 }, (_, i) => ({
+      caption: `Home workout classic #${i + 1} — still works 🔁`,
+      hashtags: ["homeworkout", "quietcardio", "fatburning", "standingabs"],
+      postedAt: daysAgo(35 + i * 5),
+      views: 8_000 + i * 300,
+      likes: 300 + i * 8,
+      comments: 20 + i,
+      bookmarks: 95 + i * 2,
+    })),
+  );
+
   // Fully optimized creator: the "A grade" showcase.
   await upsertCreator(
     {
@@ -136,7 +391,25 @@ async function main() {
     })),
   );
 
-  console.log("Seed complete: 2 creators, fitness benchmarks + keywords.");
+  await seedKeywords();
+  await seedVideoHashtags();
+
+  // Reseeding changes what queries should return; drop the read-through cache.
+  try {
+    const redis = new Redis(process.env.REDIS_URL ?? "redis://localhost:6379", {
+      lazyConnect: true,
+      maxRetriesPerRequest: 1,
+    });
+    await redis.flushdb();
+    redis.disconnect();
+    console.log("Cache flushed.");
+  } catch {
+    console.warn("Redis unavailable — skipped cache flush.");
+  }
+
+  console.log(
+    `Seed complete: 3 creators, fitness benchmarks, ${KEYWORDS.length} keywords × ${HISTORY_DAYS}d stats, video hashtags.`,
+  );
 }
 
 main()

@@ -44,6 +44,11 @@ export function hashtagMatchesKeyword(tag: string, keyword: string): boolean {
   return normalizeText(tag).replace(/^#/u, "").includes(needle);
 }
 
+/** "quiet cardio" -> "quietcardio": the hashtag form of a keyword phrase. */
+export function hashtagify(keyword: string): string {
+  return normalizeText(keyword).replace(/\s+/gu, "");
+}
+
 export function median(values: number[]): number {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => a - b);

@@ -31,19 +31,66 @@ model Creator {
 }
 
 model Video {
-  id        String   @id @default(cuid())
-  creatorId String
-  creator   Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
-  caption   String
-  hashtags  String[]
-  postedAt  DateTime
-  views     Int
-  likes     Int
-  comments  Int
-  bookmarks Int
-  url       String?
+  id            String         @id @default(cuid())
+  creatorId     String
+  creator       Creator        @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  caption       String
+  hashtags      String[]
+  postedAt      DateTime
+  views         Int
+  likes         Int
+  comments      Int
+  bookmarks     Int
+  url           String?
+  videoHashtags VideoHashtag[]
 
   @@index([creatorId, postedAt(sort: Desc)])
+}
+
+/// One row per (video, hashtag) — supports co-occurrence queries.
+model VideoHashtag {
+  videoId String
+  hashtag String
+  video   Video  @relation(fields: [videoId], references: [id], onDelete: Cascade)
+
+  @@id([videoId, hashtag])
+  @@index([hashtag])
+}
+
+/// A searchable keyword in our index, per content locale.
+model Keyword {
+  id      String             @id @default(cuid())
+  term    String
+  locale  String
+  stats   KeywordStatDaily[]
+  tracked TrackedKeyword[]
+
+  @@unique([locale, term])
+}
+
+/// Daily snapshot of a keyword's footprint in the index.
+model KeywordStatDaily {
+  id         String   @id @default(cuid())
+  keywordId  String
+  keyword    Keyword  @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+  date       DateTime @db.Date
+  videoCount Int
+  totalViews BigInt
+
+  @@unique([keywordId, date])
+  @@index([keywordId, date(sort: Desc)])
+}
+
+/// A keyword a user asked to track (rank tracking ships later).
+model TrackedKeyword {
+  id        String   @id @default(cuid())
+  userId    String
+  keywordId String
+  keyword   Keyword  @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, keywordId])
+  @@index([userId])
 }
 
 model NicheKeyword {

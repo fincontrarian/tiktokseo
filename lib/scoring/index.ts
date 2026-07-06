@@ -1,6 +1,6 @@
 export { CHECK_WEIGHTS, computeAuditScore, gradeForScore } from "./audit";
 export { computeEngagementRate, computeSaveRate } from "./engagement";
-export { formatSearchVolume, median } from "./text";
+export { formatSearchVolume, hashtagify, median } from "./text";
 export type {
   AuditInput,
   AuditOptions,

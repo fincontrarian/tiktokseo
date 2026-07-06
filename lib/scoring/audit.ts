@@ -4,6 +4,7 @@ import {
   firstCodePoints,
   formatSearchVolume,
   hashtagMatchesKeyword,
+  hashtagify,
   median,
   normalizeText,
   stripEmoji,
@@ -474,10 +475,6 @@ function mostRecentVideos(videos: VideoRecord[], limit: number): VideoRecord[] {
 
 function toTime(value: Date | string): number {
   return value instanceof Date ? value.getTime() : Date.parse(value);
-}
-
-function hashtagify(keyword: string): string {
-  return normalizeText(keyword).replace(/\s+/gu, "");
 }
 
 function formatRate(rate: number): string {
