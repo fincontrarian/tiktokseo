@@ -1,0 +1,16 @@
+// Prisma schema for Findable.
+//
+// The index tables (videos, profiles, historical engagement stats) are
+// populated by the internal ingestion pipeline and read by this app.
+// Models will be added as features are built.
+//
+// The database connection URL lives in prisma.config.ts (Prisma 7+).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
