@@ -18,48 +18,27 @@ endorsed by, or sponsored by TikTok or ByteDance Ltd.
 
 ## Local setup
 
-Prerequisites: Node.js 20+, PostgreSQL 15+, Redis 7+ (local installs or Docker).
+Prerequisites: Node.js 20+ and Docker (for PostgreSQL + Redis).
 
-1. **Install dependencies**
+### Quickstart (4 commands)
 
-   ```bash
-   npm install
-   ```
+```bash
+docker compose up -d          # starts PostgreSQL + Redis
+cp .env.example .env          # default values already point at the containers
+npm install                   # deps (+ prisma generate)
+npm run setup                 # applies migrations and seeds demo data
+npm run dev                   # http://localhost:3000
+```
 
-   This also runs `prisma generate` (postinstall).
+Then open **[http://localhost:3000](http://localhost:3000)**. A guided tour of
+every page is in [`docs/demo-tour.md`](./docs/demo-tour.md).
 
-2. **Configure environment**
+The seed loads three demo creators (`lanmoves`, `quietcardio`, `fitarchive`)
+with 12 months of daily history, fitness keywords across en/vi/id, and prior
+audit snapshots — so every feature works with realistic data out of the box.
 
-   ```bash
-   cp .env.example .env
-   ```
-
-   Adjust `DATABASE_URL` and `REDIS_URL` if your local PostgreSQL/Redis differ
-   from the defaults. Quick start with Docker:
-
-   ```bash
-   docker run -d --name findable-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=findable -p 5432:5432 postgres:16
-   docker run -d --name findable-redis -p 6379:6379 redis:7
-   ```
-
-3. **Sync the database schema and seed demo data**
-
-   ```bash
-   npx prisma migrate dev
-   npx prisma db seed
-   ```
-
-   The seed adds two demo creators (`lanmoves`, `quietcardio`) plus fitness
-   niche benchmarks so the free audit works locally.
-
-4. **Run the dev server**
-
-   ```bash
-   npm run dev
-   ```
-
-   Open [http://localhost:3000](http://localhost:3000) and try
-   [/audit](http://localhost:3000/audit) with `@lanmoves`.
+> No Docker? Install PostgreSQL 15+ and Redis 7+ yourself, create a `findable`
+> database, then run the same `npm install`, `npm run setup`, `npm run dev`.
 
 ## Scripts
 

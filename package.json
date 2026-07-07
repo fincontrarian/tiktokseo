@@ -15,7 +15,8 @@
     "postinstall": "prisma generate",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
-    "db:seed": "prisma db seed"
+    "db:seed": "prisma db seed",
+    "setup": "prisma migrate deploy && prisma db seed"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
