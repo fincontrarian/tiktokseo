@@ -17,3 +17,22 @@ export type {
   KeywordRow,
   RelatedHashtag,
 } from "./keywords";
+export {
+  addProfileEvent,
+  addTrackedProfile,
+  composeWeeklyDigests,
+  countTrackedProfiles,
+  findCreatorIdByHandle,
+  getCreatorStatsSeries,
+  getLatestAuditSnapshots,
+  listProfileEvents,
+  listTrackedProfiles,
+  removeTrackedProfile,
+  saveAuditSnapshot,
+} from "./dashboard";
+export type {
+  AuditSnapshotItem,
+  DailyStatPoint,
+  ProfileEventItem,
+  TrackedProfileSummary,
+} from "./dashboard";

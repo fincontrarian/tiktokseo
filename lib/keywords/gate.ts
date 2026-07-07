@@ -10,7 +10,10 @@
  * cache.
  */
 
-export type Plan = "free" | "paid";
+import { planConfig } from "@/lib/plan";
+import type { Plan } from "@/lib/plan";
+
+export type { Plan };
 
 export interface GateUser {
   id: string;
@@ -79,31 +82,33 @@ export function withRecencyGate(
 ): GatedKeywordQuery {
   const pageSize = clampInt(query.pageSize, 1, MAX_PAGE_SIZE);
   const page = clampInt(query.page, 1, 10_000);
+  const config = planConfig(user.plan);
 
-  if (user.plan === "paid") {
+  if (config.freshKeywordData) {
     return {
       ...query,
       page,
       pageSize,
       asOf: startOfUtcDay(now),
-      rowCap: null,
+      rowCap: config.keywordRowCap,
       precision: "exact",
-      allowExport: true,
+      allowExport: config.csvExport,
       cacheTtlSeconds: PAID_CACHE_TTL_SECONDS,
     };
   }
 
-  // Free plan: delayed data, first page only, capped rows, banded growth.
+  // Delayed tier: old data, first page only, capped rows, banded growth.
+  const rowCap = config.keywordRowCap ?? FREE_ROW_CAP;
   return {
     ...query,
     page: 1,
-    pageSize: FREE_ROW_CAP,
+    pageSize: rowCap,
     asOf: startOfUtcDay(
       new Date(now.getTime() - FREE_DATA_DELAY_DAYS * DAY_MS),
     ),
-    rowCap: FREE_ROW_CAP,
+    rowCap,
     precision: "banded",
-    allowExport: false,
+    allowExport: config.csvExport,
     cacheTtlSeconds: FREE_CACHE_TTL_SECONDS,
   };
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import type { Plan } from "@/lib/keywords/gate";
+import { PLANS } from "@/lib/plan";
+import type { Plan } from "@/lib/plan";
 
 interface PlanSwitcherProps {
   action: (formData: FormData) => Promise<void>;
   current: Plan;
   label: string;
-  freeLabel: string;
-  paidLabel: string;
+  planLabels: Record<Plan, string>;
 }
 
 /** DEV ONLY — plan simulator until real auth/billing ships. */
@@ -15,8 +15,7 @@ export function PlanSwitcher({
   action,
   current,
   label,
-  freeLabel,
-  paidLabel,
+  planLabels,
 }: PlanSwitcherProps) {
   return (
     <form
@@ -24,7 +23,7 @@ export function PlanSwitcher({
       className="border-ink/15 flex items-center gap-1 rounded-full border p-0.5 text-xs"
       title={label}
     >
-      {(["free", "paid"] as const).map((plan) => (
+      {PLANS.map((plan) => (
         <button
           key={plan}
           type="submit"
@@ -37,7 +36,7 @@ export function PlanSwitcher({
               : "text-ink/60 hover:text-ink px-3 py-1"
           }
         >
-          {plan === "free" ? freeLabel : paidLabel}
+          {planLabels[plan]}
         </button>
       ))}
     </form>

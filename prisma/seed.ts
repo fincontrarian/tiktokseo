@@ -50,6 +50,7 @@ async function upsertCreator(
     bio: string;
     followerCount: number;
     niche: string;
+    firstSeenAt?: Date;
   },
   videos: SeedVideo[],
 ) {
@@ -299,6 +300,138 @@ async function seedVideoHashtags() {
   await prisma.videoHashtag.createMany({ data: rows });
 }
 
+/**
+ * 12 months of daily profile stats per creator — the dashboard's wow moment
+ * is that this history exists before the user ever signs up.
+ */
+interface StatCurve {
+  handle: string;
+  days: number;
+  followersStart: number;
+  followersEnd: number;
+  avgViewsStart: number;
+  avgViewsEnd: number;
+  erStart: number;
+  erEnd: number;
+  saveStart: number;
+  saveEnd: number;
+}
+
+const STAT_CURVES: StatCurve[] = [
+  {
+    // Steady growth, but ER and saves sliding — matches their weak audit.
+    handle: "lanmoves",
+    days: 365,
+    followersStart: 9_800,
+    followersEnd: 42_300,
+    avgViewsStart: 6_500,
+    avgViewsEnd: 13_500,
+    erStart: 0.062,
+    erEnd: 0.028,
+    saveStart: 0.011,
+    saveEnd: 0.004,
+  },
+  {
+    // The A-grade showcase: everything trending up.
+    handle: "quietcardio",
+    days: 300,
+    followersStart: 21_000,
+    followersEnd: 128_500,
+    avgViewsStart: 9_000,
+    avgViewsEnd: 41_000,
+    erStart: 0.048,
+    erEnd: 0.064,
+    saveStart: 0.009,
+    saveEnd: 0.016,
+  },
+  {
+    // Dormant archive account: slow decline.
+    handle: "fitarchive",
+    days: 365,
+    followersStart: 22_400,
+    followersEnd: 18_900,
+    avgViewsStart: 11_000,
+    avgViewsEnd: 8_400,
+    erStart: 0.045,
+    erEnd: 0.038,
+    saveStart: 0.013,
+    saveEnd: 0.011,
+  },
+];
+
+function lerp(start: number, end: number, t: number): number {
+  return start + (end - start) * t;
+}
+
+async function seedCreatorStats() {
+  for (const [index, curve] of STAT_CURVES.entries()) {
+    const creator = await prisma.creator.findUnique({
+      where: { handle: curve.handle },
+    });
+    if (!creator) continue;
+
+    await prisma.creator.update({
+      where: { id: creator.id },
+      data: { firstSeenAt: daysAgo(curve.days) },
+    });
+    await prisma.creatorStatDaily.deleteMany({
+      where: { creatorId: creator.id },
+    });
+
+    const rows = Array.from({ length: curve.days }, (_, i) => {
+      const age = curve.days - 1 - i; // days ago; last row = today
+      const t = i / (curve.days - 1);
+      // Ease-in growth curve plus deterministic wobble.
+      const progress = t * t * (3 - 2 * t);
+      const noise = 1 + wobble(index + 10, age);
+      const date = new Date(Date.now() - age * DAY);
+      date.setUTCHours(0, 0, 0, 0);
+      return {
+        creatorId: creator.id,
+        date,
+        followerCount: Math.round(
+          lerp(curve.followersStart, curve.followersEnd, progress) * noise,
+        ),
+        avgViewsPerVideo: Math.round(
+          lerp(curve.avgViewsStart, curve.avgViewsEnd, progress) * noise,
+        ),
+        engagementRate: Number(
+          (lerp(curve.erStart, curve.erEnd, progress) * noise).toFixed(4),
+        ),
+        saveRate: Number(
+          (lerp(curve.saveStart, curve.saveEnd, progress) * noise).toFixed(4),
+        ),
+      };
+    });
+    await prisma.creatorStatDaily.createMany({ data: rows });
+  }
+}
+
+/** Prior audit runs so the dashboard's score-delta card has history. */
+async function seedAuditSnapshots() {
+  const lanmoves = await prisma.creator.findUnique({
+    where: { handle: "lanmoves" },
+  });
+  if (!lanmoves) return;
+  await prisma.auditSnapshot.deleteMany({ where: { creatorId: lanmoves.id } });
+  await prisma.auditSnapshot.createMany({
+    data: [
+      {
+        creatorId: lanmoves.id,
+        score: 58,
+        grade: "F",
+        createdAt: daysAgo(45),
+      },
+      {
+        creatorId: lanmoves.id,
+        score: 65,
+        grade: "D",
+        createdAt: daysAgo(12),
+      },
+    ],
+  });
+}
+
 async function main() {
   await prisma.nicheBenchmark.upsert({
     where: { niche: "fitness" },
@@ -393,6 +526,8 @@ async function main() {
 
   await seedKeywords();
   await seedVideoHashtags();
+  await seedCreatorStats();
+  await seedAuditSnapshots();
 
   // Reseeding changes what queries should return; drop the read-through cache.
   try {

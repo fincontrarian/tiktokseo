@@ -1,10 +1,11 @@
 import { cookies } from "next/headers";
-import type { Plan } from "@/lib/keywords/gate";
+import { normalizePlan } from "@/lib/plan";
+import type { Plan } from "@/lib/plan";
 
 /**
  * AUTH PLACEHOLDER — real authentication ships in a later prompt.
  * Every request gets a fixed dev user; the plan comes from a dev cookie so
- * both tiers can be exercised. Replace getSession() wholesale when real
+ * all tiers can be exercised. Replace getSession() wholesale when real
  * auth lands; callers only depend on the Session shape.
  */
 
@@ -17,6 +18,8 @@ export interface Session {
 
 export async function getSession(): Promise<Session> {
   const jar = await cookies();
-  const plan: Plan = jar.get(PLAN_COOKIE)?.value === "paid" ? "paid" : "free";
-  return { userId: "dev-user-1", plan };
+  return {
+    userId: "dev-user-1",
+    plan: normalizePlan(jar.get(PLAN_COOKIE)?.value),
+  };
 }

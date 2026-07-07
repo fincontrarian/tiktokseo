@@ -24,8 +24,8 @@ test.describe("keyword research — recency gating", () => {
     page,
   }) => {
     await page.goto("/app/keywords");
-    await page.getByTestId("plan-paid").click();
-    await expect(page.getByTestId("plan-badge")).toContainText("Paid");
+    await page.getByTestId("plan-pro").click();
+    await expect(page.getByTestId("plan-badge")).toContainText("Pro");
 
     await expect(page.getByTestId("keyword-row")).toHaveCount(10);
     await expect(page.getByTestId("locked-row")).toHaveCount(0);
@@ -72,7 +72,7 @@ test.describe("keyword research — recency gating", () => {
 
   test("locale filter switches markets (vi keywords)", async ({ page }) => {
     await page.goto("/app/keywords?kwl=vi");
-    await page.getByTestId("plan-paid").click();
+    await page.getByTestId("plan-pro").click();
     await expect(page.getByTestId("keyword-row").first()).toContainText(
       /bài tập tại nhà|giảm mỡ bụng/,
     );

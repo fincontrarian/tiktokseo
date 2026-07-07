@@ -16,7 +16,8 @@ const NOW = new Date("2026-07-06T15:30:00Z");
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const FREE: GateUser = { id: "u1", plan: "free" };
-const PAID: GateUser = { id: "u2", plan: "paid" };
+const CREATOR: GateUser = { id: "u2", plan: "creator" };
+const PRO: GateUser = { id: "u3", plan: "pro" };
 
 function query(overrides: Partial<KeywordQuery> = {}): KeywordQuery {
   return {
@@ -74,14 +75,18 @@ describe("withRecencyGate — free plan", () => {
   });
 });
 
-describe("withRecencyGate — paid plan", () => {
+describe("withRecencyGate — paid plans", () => {
   it("uses fresh data (start of today, UTC)", () => {
-    const gated = withRecencyGate(PAID, query(), NOW);
+    const gated = withRecencyGate(PRO, query(), NOW);
     expect(gated.asOf.toISOString()).toBe("2026-07-06T00:00:00.000Z");
   });
 
   it("keeps pagination, exact numbers, export, and a 5-minute cache", () => {
-    const gated = withRecencyGate(PAID, query({ page: 3, pageSize: 25 }), NOW);
+    const gated = withRecencyGate(
+      CREATOR,
+      query({ page: 3, pageSize: 25 }),
+      NOW,
+    );
     expect(gated.rowCap).toBeNull();
     expect(gated.page).toBe(3);
     expect(gated.pageSize).toBe(25);
@@ -92,7 +97,7 @@ describe("withRecencyGate — paid plan", () => {
 
   it("clamps hostile page and pageSize values", () => {
     const gated = withRecencyGate(
-      PAID,
+      PRO,
       query({ page: -5, pageSize: 10_000 }),
       NOW,
     );
@@ -100,7 +105,7 @@ describe("withRecencyGate — paid plan", () => {
     expect(gated.pageSize).toBe(MAX_PAGE_SIZE);
 
     const nan = withRecencyGate(
-      PAID,
+      PRO,
       query({ page: Number.NaN, pageSize: Number.NaN }),
       NOW,
     );
@@ -109,8 +114,8 @@ describe("withRecencyGate — paid plan", () => {
   });
 
   it("is deterministic for a fixed now", () => {
-    const a = withRecencyGate(PAID, query(), NOW);
-    const b = withRecencyGate(PAID, query(), NOW);
+    const a = withRecencyGate(PRO, query(), NOW);
+    const b = withRecencyGate(PRO, query(), NOW);
     expect(a).toEqual(b);
   });
 });
@@ -156,19 +161,19 @@ describe("toDisplayGrowth", () => {
 describe("gatedQueryCacheKey", () => {
   it("differs across tiers, filters, and asOf days", () => {
     const free = gatedQueryCacheKey(withRecencyGate(FREE, query(), NOW));
-    const paid = gatedQueryCacheKey(withRecencyGate(PAID, query(), NOW));
+    const paid = gatedQueryCacheKey(withRecencyGate(PRO, query(), NOW));
     const paidVi = gatedQueryCacheKey(
-      withRecencyGate(PAID, query({ locale: "vi" }), NOW),
+      withRecencyGate(PRO, query({ locale: "vi" }), NOW),
     );
     const paidNextDay = gatedQueryCacheKey(
-      withRecencyGate(PAID, query(), new Date(NOW.getTime() + DAY_MS)),
+      withRecencyGate(PRO, query(), new Date(NOW.getTime() + DAY_MS)),
     );
     expect(new Set([free, paid, paidVi, paidNextDay]).size).toBe(4);
   });
 
   it("is stable for identical gated queries", () => {
-    const a = gatedQueryCacheKey(withRecencyGate(PAID, query(), NOW));
-    const b = gatedQueryCacheKey(withRecencyGate(PAID, query(), NOW));
+    const a = gatedQueryCacheKey(withRecencyGate(PRO, query(), NOW));
+    const b = gatedQueryCacheKey(withRecencyGate(PRO, query(), NOW));
     expect(a).toBe(b);
   });
 });

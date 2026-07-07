@@ -17,17 +17,91 @@ datasource db {
 }
 
 model Creator {
-  id            String   @id @default(cuid())
-  handle        String   @unique
-  displayName   String
-  bio           String
-  followerCount Int
-  niche         String
-  videos        Video[]
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String             @id @default(cuid())
+  handle         String             @unique
+  displayName    String
+  bio            String
+  followerCount  Int
+  niche          String
+  /// When our ingestion pipeline first saw this profile — usually long
+  /// before the creator signs up, which is the dashboard's wow moment.
+  firstSeenAt    DateTime           @default(now())
+  videos         Video[]
+  statsDaily     CreatorStatDaily[]
+  trackedBy      TrackedProfile[]
+  profileEvents  ProfileEvent[]
+  auditSnapshots AuditSnapshot[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
 
   @@index([niche])
+}
+
+/// Daily profile stats from our index. Populated by the ingestion pipeline;
+/// history predates user signups.
+model CreatorStatDaily {
+  id               String   @id @default(cuid())
+  creatorId        String
+  creator          Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  date             DateTime @db.Date
+  followerCount    Int
+  avgViewsPerVideo Float
+  engagementRate   Float
+  saveRate         Float
+
+  @@unique([creatorId, date])
+  @@index([creatorId, date(sort: Desc)])
+}
+
+/// A profile a user tracks on their dashboard. Limits come from lib/plan.ts.
+model TrackedProfile {
+  id        String   @id @default(cuid())
+  userId    String
+  creatorId String
+  creator   Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, creatorId])
+  @@index([userId])
+}
+
+/// A user-logged optimization event ("changed bio"), rendered as a vertical
+/// annotation on every dashboard chart.
+model ProfileEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  creatorId String
+  creator   Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  date      DateTime @db.Date
+  label     String
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, creatorId, date])
+}
+
+/// Stored audit runs so the dashboard can show score deltas over time.
+model AuditSnapshot {
+  id        String   @id @default(cuid())
+  creatorId String
+  creator   Creator  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  score     Int
+  grade     String
+  createdAt DateTime @default(now())
+
+  @@index([creatorId, createdAt(sort: Desc)])
+}
+
+/// Composed weekly digest emails (stub: stored, not sent).
+model Digest {
+  id        String   @id @default(cuid())
+  userId    String
+  weekStart DateTime @db.Date
+  subject   String
+  body      String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, weekStart])
 }
 
 model Video {

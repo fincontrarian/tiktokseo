@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { getSession, PLAN_COOKIE } from "@/lib/auth";
 import { trackKeyword } from "@/lib/data";
+import { normalizePlan } from "@/lib/plan";
 
 export interface TrackState {
   tracked: boolean;
@@ -22,7 +23,7 @@ export async function trackKeywordAction(
 
 /** DEV ONLY — simulates the plan until real auth/billing ships. */
 export async function setDevPlanAction(formData: FormData): Promise<void> {
-  const plan = formData.get("plan") === "paid" ? "paid" : "free";
+  const plan = normalizePlan(String(formData.get("plan") ?? ""));
   const jar = await cookies();
   jar.set(PLAN_COOKIE, plan, { path: "/", sameSite: "lax" });
 }
