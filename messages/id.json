@@ -25,7 +25,8 @@
     "feature2Title": "Optimalkan",
     "feature2Body": "Perbaikan spesifik lengkap dengan volume pencarian — bukan saran umum.",
     "feature3Title": "Pantau",
-    "feature3Body": "Pemeriksaan peringkat harian dari indeks 75 juta video, diperbarui setiap hari."
+    "feature3Body": "Pemeriksaan peringkat harian dari indeks 75 juta video, diperbarui setiap hari.",
+    "exploreTitle": "Jelajahi indeks"
   },
   "pricing": {
     "metaTitle": "Harga — Findable",
@@ -168,5 +169,58 @@
     "eventInvalid": "Isi tanggal dan label singkat (maks 80 karakter).",
     "eventSuccess": "Tercatat — lihat grafiknya.",
     "eventsEmpty": "Belum ada perubahan yang dicatat."
+  },
+  "publicCreator": {
+    "metaTitle": "{name} (@{handle}) Statistik & Analitik TikTok — Pengikut, Tingkat Engagement",
+    "metaDescription": "Pertumbuhan pengikut, tingkat engagement, tingkat simpan, dan video terbaik @{handle} — dari indeks 75 juta video TikTok Findable, diperbarui harian.",
+    "indexedSince": "Di indeks kami sejak {date}",
+    "nicheRank": "#{rank} dari {total} di {niche} berdasarkan tingkat engagement",
+    "followers": "Pengikut",
+    "videos": "Video di indeks",
+    "erTile": "Tingkat engagement",
+    "saveTile": "Tingkat simpan",
+    "vsMedian": "median niche {value}",
+    "chartTitle": "Pertumbuhan pengikut — 90 hari terakhir",
+    "topVideosTitle": "Video terbaik berdasarkan tayangan",
+    "views": "tayangan",
+    "likes": "suka",
+    "saves": "simpanan",
+    "topHashtagsTitle": "Hashtag paling sering dipakai",
+    "similarTitle": "Kreator serupa di {niche}",
+    "nicheHub": "Lihat semua kreator {niche} →",
+    "ctaTitle": "Apakah @{handle} mudah ditemukan di pencarian TikTok?",
+    "ctaSub": "Jalankan audit SEO gratis — enam pemeriksaan visibilitas dengan perbaikan persis.",
+    "ctaButton": "Dapatkan audit SEO lengkap untuk @{handle}"
+  },
+  "publicHashtag": {
+    "metaTitle": "Hashtag #{tag} TikTok — volume, pertumbuhan & video terbaik",
+    "metaDescription": "Performa #{tag} di TikTok: {count} video di indeks kami, pertumbuhan mingguan, video terbaik, dan hashtag terkait. Diperbarui harian.",
+    "videosCount": "{count} video di indeks kami",
+    "chartTitle": "Video baru per minggu",
+    "topVideosTitle": "Video terbaik",
+    "by": "oleh",
+    "views": "tayangan",
+    "relatedTitle": "Hashtag terkait",
+    "sharedVideos": "{count} video bersama",
+    "topCreatorsTitle": "Kreator teratas yang memakai #{tag}",
+    "videosWithTag": "{count} video",
+    "nicheLink": "Jelajahi kreator {niche} →"
+  },
+  "publicNiche": {
+    "metaTitle": "Kreator {niche} teratas di TikTok — berdasarkan tingkat engagement",
+    "metaDescription": "Kreator {niche} yang benar-benar melibatkan audiens — diperingkat berdasarkan tingkat engagement, bukan jumlah pengikut. Median, kreator underrated, dan hashtag teratas.",
+    "title": "Kreator {niche} teratas",
+    "sub": "Diperingkat berdasarkan tingkat engagement — bukan jumlah pengikut. Dari indeks kami, diperbarui harian.",
+    "medians": "Median niche: engagement {er} · tingkat simpan {save}",
+    "colRank": "#",
+    "colCreator": "Kreator",
+    "colFollowers": "Pengikut",
+    "colEr": "Engagement",
+    "colSave": "Tingkat simpan",
+    "colVideos": "Video",
+    "underratedTitle": "Kreator underrated",
+    "underratedSub": "Tingkat simpan di atas median niche dengan kurang dari {max} pengikut — profil yang akan diuntungkan pencarian berikutnya.",
+    "hashtagsTitle": "Hashtag teratas di {niche}",
+    "auditCta": "Audit profilmu gratis →"
   }
 }

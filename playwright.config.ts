@@ -6,6 +6,9 @@ export default defineConfig({
   testDir: "./e2e",
   timeout: 60_000,
   fullyParallel: false,
+  // Suites share one DB and mutate tracked-profile state; parallel workers
+  // race each other (untrack loops, plan cookies), so run files serially.
+  workers: 1,
   retries: process.env.CI ? 1 : 0,
   reporter: [["list"]],
   use: {

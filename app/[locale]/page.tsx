@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { listQualityHashtags, listQualityNiches } from "@/lib/data";
+
+// Rebuilt daily so the explore strip tracks the index.
+export const revalidate = 86400;
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -18,6 +22,12 @@ export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("home");
+
+  // Entry points into the programmatic SEO mesh (never leave hubs orphaned).
+  const [niches, hashtags] = await Promise.all([
+    listQualityNiches(6).catch(() => [] as string[]),
+    listQualityHashtags(8).catch(() => [] as string[]),
+  ]);
 
   const features = [
     { title: t("feature1Title"), body: t("feature1Body") },
@@ -59,6 +69,34 @@ export default async function HomePage({ params }: HomePageProps) {
           ))}
         </div>
       </section>
+
+      {(niches.length > 0 || hashtags.length > 0) && (
+        <section className="border-ink/10 border-t py-16">
+          <h2 className="text-2xl font-bold tracking-tight">
+            {t("exploreTitle")}
+          </h2>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {niches.map((niche) => (
+              <Link
+                key={niche}
+                href={`/niches/${niche}`}
+                className="bg-ink rounded-full px-4 py-2 text-sm font-semibold text-white capitalize hover:opacity-90"
+              >
+                {niche}
+              </Link>
+            ))}
+            {hashtags.map((tag) => (
+              <Link
+                key={tag}
+                href={`/hashtags/${encodeURIComponent(tag)}`}
+                className="border-violet/30 text-violet hover:bg-violet/5 rounded-full border px-4 py-2 text-sm font-medium"
+              >
+                #{tag}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

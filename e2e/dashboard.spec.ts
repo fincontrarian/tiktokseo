@@ -75,12 +75,14 @@ test.describe("tracked-profile dashboard", () => {
       page.getByTestId("event-item").filter({ hasText: label }).first(),
     ).toBeVisible();
 
-    // The event renders as a vertical annotation on the charts.
+    // The event renders as a vertical annotation on the charts. Events
+    // persist in the DB across runs, so duplicates may exist — .first().
     await expect(
       page
         .getByTestId("stat-chart")
         .first()
-        .locator("svg text", { hasText: label }),
+        .locator("svg text", { hasText: label })
+        .first(),
     ).toBeVisible();
   });
 

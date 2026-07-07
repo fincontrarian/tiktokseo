@@ -25,7 +25,8 @@
     "feature2Title": "Tối ưu",
     "feature2Body": "Gợi ý sửa cụ thể kèm lượng tìm kiếm — không phải lời khuyên chung chung.",
     "feature3Title": "Theo dõi",
-    "feature3Body": "Kiểm tra thứ hạng hằng ngày từ chỉ mục 75 triệu video, cập nhật mỗi ngày."
+    "feature3Body": "Kiểm tra thứ hạng hằng ngày từ chỉ mục 75 triệu video, cập nhật mỗi ngày.",
+    "exploreTitle": "Khám phá chỉ mục"
   },
   "pricing": {
     "metaTitle": "Bảng giá — Findable",
@@ -168,5 +169,58 @@
     "eventInvalid": "Thêm ngày và nhãn ngắn (tối đa 80 ký tự).",
     "eventSuccess": "Đã ghi — xem biểu đồ nhé.",
     "eventsEmpty": "Chưa có thay đổi nào được ghi."
+  },
+  "publicCreator": {
+    "metaTitle": "{name} (@{handle}) Thống kê & Phân tích TikTok — Người theo dõi, Tỷ lệ tương tác",
+    "metaDescription": "Tăng trưởng người theo dõi, tỷ lệ tương tác, tỷ lệ lưu và video nổi bật của @{handle} — từ chỉ mục 75 triệu video TikTok của Findable, cập nhật hằng ngày.",
+    "indexedSince": "Trong chỉ mục của chúng tôi từ {date}",
+    "nicheRank": "Hạng {rank}/{total} trong {niche} theo tỷ lệ tương tác",
+    "followers": "Người theo dõi",
+    "videos": "Video trong chỉ mục",
+    "erTile": "Tỷ lệ tương tác",
+    "saveTile": "Tỷ lệ lưu",
+    "vsMedian": "trung vị ngách {value}",
+    "chartTitle": "Tăng trưởng người theo dõi — 90 ngày qua",
+    "topVideosTitle": "Video nổi bật theo lượt xem",
+    "views": "lượt xem",
+    "likes": "lượt thích",
+    "saves": "lượt lưu",
+    "topHashtagsTitle": "Hashtag dùng nhiều nhất",
+    "similarTitle": "Nhà sáng tạo tương tự trong {niche}",
+    "nicheHub": "Xem tất cả nhà sáng tạo {niche} →",
+    "ctaTitle": "@{handle} có dễ được tìm thấy trên TikTok?",
+    "ctaSub": "Chạy kiểm tra SEO miễn phí — sáu bài kiểm tra khả năng hiển thị kèm cách sửa cụ thể.",
+    "ctaButton": "Nhận kiểm tra SEO đầy đủ cho @{handle}"
+  },
+  "publicHashtag": {
+    "metaTitle": "Hashtag #{tag} trên TikTok — khối lượng, tăng trưởng & video nổi bật",
+    "metaDescription": "Hiệu quả của #{tag} trên TikTok: {count} video trong chỉ mục, tăng trưởng theo tuần, video nổi bật và hashtag liên quan. Cập nhật hằng ngày.",
+    "videosCount": "{count} video trong chỉ mục của chúng tôi",
+    "chartTitle": "Video mới mỗi tuần",
+    "topVideosTitle": "Video nổi bật",
+    "by": "bởi",
+    "views": "lượt xem",
+    "relatedTitle": "Hashtag liên quan",
+    "sharedVideos": "{count} video chung",
+    "topCreatorsTitle": "Nhà sáng tạo dùng #{tag} nhiều nhất",
+    "videosWithTag": "{count} video",
+    "nicheLink": "Khám phá nhà sáng tạo {niche} →"
+  },
+  "publicNiche": {
+    "metaTitle": "Nhà sáng tạo {niche} hàng đầu TikTok — xếp theo tỷ lệ tương tác",
+    "metaDescription": "Những nhà sáng tạo {niche} thực sự gắn kết khán giả — xếp theo tỷ lệ tương tác, không phải số người theo dõi. Trung vị, nhà sáng tạo bị đánh giá thấp và hashtag hàng đầu.",
+    "title": "Nhà sáng tạo {niche} hàng đầu",
+    "sub": "Xếp theo tỷ lệ tương tác — không phải số người theo dõi. Từ chỉ mục của chúng tôi, cập nhật hằng ngày.",
+    "medians": "Trung vị ngách: tương tác {er} · tỷ lệ lưu {save}",
+    "colRank": "#",
+    "colCreator": "Nhà sáng tạo",
+    "colFollowers": "Người theo dõi",
+    "colEr": "Tương tác",
+    "colSave": "Tỷ lệ lưu",
+    "colVideos": "Video",
+    "underratedTitle": "Bị đánh giá thấp",
+    "underratedSub": "Tỷ lệ lưu trên trung vị ngách với dưới {max} người theo dõi — những hồ sơ mà tìm kiếm sẽ ưu ái tiếp theo.",
+    "hashtagsTitle": "Hashtag hàng đầu trong {niche}",
+    "auditCta": "Kiểm tra hồ sơ miễn phí →"
   }
 }

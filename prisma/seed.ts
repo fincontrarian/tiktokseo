@@ -345,6 +345,32 @@ const STAT_CURVES: StatCurve[] = [
     saveEnd: 0.016,
   },
   {
+    // Consistent daily poster: healthy on every metric.
+    handle: "dailymoves",
+    days: 330,
+    followersStart: 12_500,
+    followersEnd: 64_800,
+    avgViewsStart: 5_500,
+    avgViewsEnd: 15_800,
+    erStart: 0.05,
+    erEnd: 0.055,
+    saveStart: 0.011,
+    saveEnd: 0.013,
+  },
+  {
+    // Small but mighty: modest reach, exceptional save rate.
+    handle: "quietlifter",
+    days: 200,
+    followersStart: 1_400,
+    followersEnd: 6_200,
+    avgViewsStart: 1_800,
+    avgViewsEnd: 4_700,
+    erStart: 0.06,
+    erEnd: 0.071,
+    saveStart: 0.024,
+    saveEnd: 0.031,
+  },
+  {
     // Dormant archive account: slow decline.
     handle: "fitarchive",
     days: 365,
@@ -504,6 +530,53 @@ async function main() {
     })),
   );
 
+  // High-volume poster: pushes shared hashtags over the 50-video
+  // publish-quality threshold for /hashtags/[tag] pages.
+  await upsertCreator(
+    {
+      handle: "dailymoves",
+      displayName: "Daily Moves | Home Workout Routines",
+      bio: "A home workout every single day. Fat burning, standing abs, quiet cardio.",
+      followerCount: 64_800,
+      niche: "fitness",
+    },
+    Array.from({ length: 25 }, (_, i) => ({
+      caption: `Home workout day ${i + 1}: fat burning circuit 💥`,
+      hashtags: ["homeworkout", "quietcardio", "fatburning", "standingabs"],
+      postedAt: daysAgo(1 + i * 3),
+      views: 15_000 + i * 400,
+      likes: 700 + i * 20,
+      comments: 45 + i,
+      bookmarks: 190 + i * 4,
+    })),
+  );
+
+  // Underrated creator: small following, exceptional save rate — surfaces
+  // in the /niches/[niche] "underrated creators" section.
+  await upsertCreator(
+    {
+      handle: "quietlifter",
+      displayName: "Quiet Lifter | Apartment Friendly Workout",
+      bio: "Apartment friendly workout plans people actually save. Standing abs specialist.",
+      followerCount: 6_200,
+      niche: "fitness",
+    },
+    Array.from({ length: 8 }, (_, i) => ({
+      caption: `Apartment friendly workout you'll want to save 📌 vol. ${i + 1}`,
+      hashtags: [
+        "homeworkout",
+        "quietcardio",
+        "standingabs",
+        "apartmentworkout",
+      ],
+      postedAt: daysAgo(2 + i * 4),
+      views: 4_200 + i * 150,
+      likes: 260 + i * 8,
+      comments: 22 + i,
+      bookmarks: 130 + i * 5, // save rate ~3% — far above the 1% median
+    })),
+  );
+
   // Fully optimized creator: the "A grade" showcase.
   await upsertCreator(
     {
@@ -543,7 +616,7 @@ async function main() {
   }
 
   console.log(
-    `Seed complete: 3 creators, fitness benchmarks, ${KEYWORDS.length} keywords × ${HISTORY_DAYS}d stats, video hashtags.`,
+    `Seed complete: 5 creators, fitness benchmarks, ${KEYWORDS.length} keywords × ${HISTORY_DAYS}d stats, video hashtags.`,
   );
 }
 

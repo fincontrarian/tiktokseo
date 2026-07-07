@@ -16,7 +16,8 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "db:seed": "prisma db seed",
-    "setup": "prisma migrate deploy && prisma db seed"
+    "setup": "prisma migrate deploy && prisma db seed",
+    "sitemaps": "tsx scripts/generate-sitemaps.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",

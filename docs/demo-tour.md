@@ -9,20 +9,20 @@ up — the A-grade showcase), and **`fitarchive`** (a dormant archive account).
 
 ## Public marketing
 
-| URL | What to see |
-| --- | --- |
-| `/` | Landing page. Try the language links in the footer → `/vi`, `/id`. |
-| `/pricing` | Pricing (plans coming soon). |
+| URL        | What to see                                                        |
+| ---------- | ------------------------------------------------------------------ |
+| `/`        | Landing page. Try the language links in the footer → `/vi`, `/id`. |
+| `/pricing` | Pricing (plans coming soon).                                       |
 
 ## Free audit (acquisition surface)
 
-| URL | What to see |
-| --- | --- |
-| `/audit` | Enter `@lanmoves` and submit. |
-| `/audit/lanmoves` | Animated score dial + grade, the two highest-priority fixes with exact advice, and the rest **blurred behind an email wall**. Enter any email to unlock the full report (sets a cookie). |
-| `/audit/quietcardio` | The A-grade version (higher score). |
-| `/audit/ghost.handle_404` | "Not in our index yet" → email lead-capture state. |
-| `/audit/lanmoves/opengraph-image` | The auto-generated social share image (handle + score + dial). |
+| URL                               | What to see                                                                                                                                                                              |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/audit`                          | Enter `@lanmoves` and submit.                                                                                                                                                            |
+| `/audit/lanmoves`                 | Animated score dial + grade, the two highest-priority fixes with exact advice, and the rest **blurred behind an email wall**. Enter any email to unlock the full report (sets a cookie). |
+| `/audit/quietcardio`              | The A-grade version (higher score).                                                                                                                                                      |
+| `/audit/ghost.handle_404`         | "Not in our index yet" → email lead-capture state.                                                                                                                                       |
+| `/audit/lanmoves/opengraph-image` | The auto-generated social share image (handle + score + dial).                                                                                                                           |
 
 ## Authenticated app
 
@@ -32,10 +32,10 @@ changes what's visible.
 
 ### Keyword research — `/app/keywords`
 
-| Plan | What to see |
-| --- | --- |
-| **Free** | 3 rows, data 30 days old, growth shown as "Rising/Falling" bands, remaining rows blurred with an upgrade CTA, no export. |
-| **Creator / Pro** | Fresh data, all rows, exact growth %, and a **Export CSV** button. |
+| Plan              | What to see                                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Free**          | 3 rows, data 30 days old, growth shown as "Rising/Falling" bands, remaining rows blurred with an upgrade CTA, no export. |
+| **Creator / Pro** | Fresh data, all rows, exact growth %, and a **Export CSV** button.                                                       |
 
 Try the search box (autocomplete over real keywords), the Market filter
 (`EN`/`VI`/`ID`), sortable columns, and click a keyword to load the

@@ -36,3 +36,20 @@ export type {
   ProfileEventItem,
   TrackedProfileSummary,
 } from "./dashboard";
+export {
+  getCreatorReport,
+  getHashtagReport,
+  getNicheReport,
+  listQualityCreatorHandles,
+  listQualityHashtags,
+  listQualityNiches,
+} from "./seo";
+export type {
+  CreatorReport,
+  HashtagReport,
+  NicheReport,
+  PublicVideo,
+  SeriesPoint,
+  TagStat,
+} from "./seo";
+export { generateSitemaps, getSitemapFile, listSitemapFiles } from "./sitemaps";

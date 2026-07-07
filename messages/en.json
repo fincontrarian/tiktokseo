@@ -25,7 +25,8 @@
     "feature2Title": "Optimize",
     "feature2Body": "Specific fixes with search volume attached — not generic advice.",
     "feature3Title": "Track",
-    "feature3Body": "Daily ranking checks from our index of 75M videos, refreshed daily."
+    "feature3Body": "Daily ranking checks from our index of 75M videos, refreshed daily.",
+    "exploreTitle": "Explore the index"
   },
   "pricing": {
     "metaTitle": "Pricing — Findable",
@@ -168,5 +169,58 @@
     "eventInvalid": "Add a date and a short label (max 80 characters).",
     "eventSuccess": "Logged — check the charts.",
     "eventsEmpty": "No changes logged yet."
+  },
+  "publicCreator": {
+    "metaTitle": "{name} (@{handle}) TikTok Statistics & Analytics — Followers, Engagement Rate",
+    "metaDescription": "Follower growth, engagement rate, save rate and top videos for @{handle} — from Findable's index of 75M TikTok videos, refreshed daily.",
+    "indexedSince": "In our index since {date}",
+    "nicheRank": "#{rank} of {total} in {niche} by engagement rate",
+    "followers": "Followers",
+    "videos": "Videos in index",
+    "erTile": "Engagement rate",
+    "saveTile": "Save rate",
+    "vsMedian": "niche median {value}",
+    "chartTitle": "Follower growth — last 90 days",
+    "topVideosTitle": "Top videos by views",
+    "views": "views",
+    "likes": "likes",
+    "saves": "saves",
+    "topHashtagsTitle": "Hashtags used most",
+    "similarTitle": "Similar creators in {niche}",
+    "nicheHub": "See all {niche} creators →",
+    "ctaTitle": "Is @{handle} findable in TikTok search?",
+    "ctaSub": "Run the free SEO audit — six search-visibility checks with exact fixes.",
+    "ctaButton": "Get the full SEO audit for @{handle}"
+  },
+  "publicHashtag": {
+    "metaTitle": "#{tag} TikTok hashtag — volume, growth & top videos",
+    "metaDescription": "How #{tag} performs on TikTok: {count} videos in our index, weekly growth, top videos and related hashtags. Refreshed daily.",
+    "videosCount": "{count} videos in our index",
+    "chartTitle": "New videos per week",
+    "topVideosTitle": "Top videos",
+    "by": "by",
+    "views": "views",
+    "relatedTitle": "Related hashtags",
+    "sharedVideos": "{count} shared videos",
+    "topCreatorsTitle": "Top creators using #{tag}",
+    "videosWithTag": "{count} videos",
+    "nicheLink": "Explore {niche} creators →"
+  },
+  "publicNiche": {
+    "metaTitle": "Top {niche} creators on TikTok — ranked by engagement rate",
+    "metaDescription": "The {niche} creators who actually engage their audience — ranked by engagement rate, not follower count. Medians, underrated creators and top hashtags.",
+    "title": "Top {niche} creators",
+    "sub": "Ranked by engagement rate — not follower count. From our index, refreshed daily.",
+    "medians": "Niche medians: {er} engagement rate · {save} save rate",
+    "colRank": "#",
+    "colCreator": "Creator",
+    "colFollowers": "Followers",
+    "colEr": "Engagement",
+    "colSave": "Save rate",
+    "colVideos": "Videos",
+    "underratedTitle": "Underrated creators",
+    "underratedSub": "Save rate above the niche median with under {max} followers — the profiles search rewards next.",
+    "hashtagsTitle": "Top hashtags in {niche}",
+    "auditCta": "Audit your profile free →"
   }
 }

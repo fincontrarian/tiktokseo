@@ -92,6 +92,14 @@ model AuditSnapshot {
   @@index([creatorId, createdAt(sort: Desc)])
 }
 
+/// Generated sitemap files (gzipped XML), rebuilt by the sitemap cron.
+model SitemapFile {
+  name        String   @id
+  content     Bytes
+  urlCount    Int
+  generatedAt DateTime @default(now())
+}
+
 /// Composed weekly digest emails (stub: stored, not sent).
 model Digest {
   id        String   @id @default(cuid())
