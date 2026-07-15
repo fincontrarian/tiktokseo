@@ -5,7 +5,8 @@
     "pricing": "Pricing",
     "creators": "Creators",
     "business": "Business",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "signIn": "Sign in"
   },
   "footer": {
     "disclaimer": "Findable is an independent analytics platform and is not affiliated with, endorsed by, or sponsored by TikTok or ByteDance Ltd.",
@@ -33,7 +34,32 @@
     "metaDescription": "Free audits for every creator. Paid plans for fresh data, full checks, and daily tracking.",
     "title": "Pricing",
     "sub": "Free audits for everyone. Fresh data and daily tracking for those who want to win.",
-    "comingSoon": "Plans are coming soon. Run a free audit in the meantime."
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "annualSave": "Save 20%",
+    "perMonth": "/month",
+    "billedAnnually": "billed {price}/year",
+    "freeName": "Free",
+    "creatorName": "Creator",
+    "proName": "Pro",
+    "freePrice": "$0",
+    "freeDesc": "Try the loop: audit your profile, see top keywords, track one profile.",
+    "creatorDesc": "For creators serious about ranking in TikTok search.",
+    "proDesc": "For agencies and multi-profile operators.",
+    "trialNote": "7-day free trial. Cancel anytime.",
+    "freeCta": "Run a free audit",
+    "paidCta": "Start 7-day free trial",
+    "mostPopular": "Most popular",
+    "fProfiles": "{count, plural, one {# tracked profile} other {# tracked profiles}}",
+    "fTopRows": "Top-3 keyword rows",
+    "fDelayed": "Data delayed 30 days",
+    "fFresh": "Fresh data, updated daily",
+    "fUnlimitedRows": "Unlimited keyword results",
+    "fTrackedKeywords": "{count} tracked keywords",
+    "fAuditsFree": "1 audit per day",
+    "fFullAudits": "Full audits",
+    "fCsv": "CSV export",
+    "fCompetitor": "Competitor compare (coming soon)"
   },
   "audit": {
     "metaTitle": "Free TikTok SEO audit — Findable",
@@ -131,7 +157,9 @@
     "pagePrev": "Previous",
     "pageNext": "Next",
     "pageInfo": "{from}–{to} of {total}",
-    "lockedRows": "{count} more keywords on the paid plan"
+    "lockedRows": "{count} more keywords on the paid plan",
+    "proOnly": "Pro only",
+    "trackLimit": "Limit reached ({limit})"
   },
   "dashboard": {
     "metaTitle": "Dashboard",
@@ -168,7 +196,10 @@
     "eventCta": "Log change",
     "eventInvalid": "Add a date and a short label (max 80 characters).",
     "eventSuccess": "Logged — check the charts.",
-    "eventsEmpty": "No changes logged yet."
+    "eventsEmpty": "No changes logged yet.",
+    "upgradedBanner": "Upgrade complete — fresh data and full limits are unlocked.",
+    "competitorTitle": "Competitor compare",
+    "competitorSoon": "Coming soon: side-by-side keyword and engagement comparison against any creator in our index."
   },
   "publicCreator": {
     "metaTitle": "{name} (@{handle}) TikTok Statistics & Analytics — Followers, Engagement Rate",
@@ -222,5 +253,33 @@
     "underratedSub": "Save rate above the niche median with under {max} followers — the profiles search rewards next.",
     "hashtagsTitle": "Top hashtags in {niche}",
     "auditCta": "Audit your profile free →"
+  },
+  "auth": {
+    "metaTitle": "Sign in — Findable",
+    "metaDescription": "Sign in to Findable with an email magic link or Google.",
+    "title": "Sign in",
+    "sub": "We'll email you a magic link — no password needed.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "you@example.com",
+    "sendLink": "Email me a sign-in link",
+    "sentTitle": "Check your inbox",
+    "sentBody": "We sent you a sign-in link. It expires in 15 minutes.",
+    "invalidEmail": "That doesn't look like a valid email address.",
+    "authError": "Sign-in failed. Please try again.",
+    "or": "or",
+    "google": "Continue with Google",
+    "signOut": "Sign out"
+  },
+  "billing": {
+    "title": "Billing",
+    "currentPlan": "Current plan",
+    "statusTrialing": "Trial until {date}",
+    "statusActive": "Renews {date}",
+    "statusPastDue": "Payment issue — we're retrying your card",
+    "cancelEnds": "Cancels {date}",
+    "cancel": "Cancel subscription",
+    "canceledNote": "Subscription canceled. You're back on the free plan.",
+    "upgrade": "Upgrade",
+    "checkoutError": "Could not start checkout. Please try again."
   }
 }

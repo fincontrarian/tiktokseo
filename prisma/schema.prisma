@@ -194,13 +194,109 @@ model NicheBenchmark {
 }
 
 model Lead {
-  id        String   @id @default(cuid())
-  email     String
-  handle    String?
-  source    String
-  locale    String   @default("en")
-  createdAt DateTime @default(now())
+  id              String    @id @default(cuid())
+  email           String
+  handle          String?
+  source          String
+  locale          String    @default("en")
+  createdAt       DateTime  @default(now())
+  /// Set when the lead signs up: they become a user on first login.
+  convertedUserId String?
+  convertedAt     DateTime?
 
   @@unique([email, source])
   @@index([createdAt])
+  @@index([email])
+}
+
+// --- Auth (NextAuth / Auth.js database sessions) -----------------------------
+
+model User {
+  id            String           @id @default(cuid())
+  name          String?
+  email         String           @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime         @default(now())
+  accounts      Account[]
+  sessions      Session[]
+  subscriptions Subscription[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// --- Billing ------------------------------------------------------------------
+
+/// Mirror of the user's Stripe subscription, maintained by the webhook
+/// handler. getUserPlan() resolves the effective plan from this table —
+/// the single source of truth for entitlements.
+model Subscription {
+  id                   String    @id @default(cuid())
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeCustomerId     String
+  stripeSubscriptionId String    @unique
+  /// "creator" | "pro" — from price metadata at checkout.
+  plan                 String
+  /// Stripe subscription status: trialing, active, past_due, canceled...
+  status               String
+  interval             String    @default("month")
+  trialEnd             DateTime?
+  currentPeriodEnd     DateTime?
+  cancelAtPeriodEnd    Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@index([userId, status])
+  @@index([stripeCustomerId])
+}
+
+/// Upgrade-gate impressions: which gated surface was shown (and later, which
+/// converts). `gate` matches the /pricing?from= attribution value.
+model GateEvent {
+  id        String   @id @default(cuid())
+  userId    String?
+  gate      String
+  kind      String   @default("impression")
+  path      String
+  locale    String   @default("en")
+  createdAt DateTime @default(now())
+
+  @@index([gate, createdAt])
+  @@index([userId, createdAt])
 }

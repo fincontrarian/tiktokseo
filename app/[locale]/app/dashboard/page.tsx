@@ -5,12 +5,15 @@ import {
   setRequestLocale,
 } from "next-intl/server";
 import { AddProfileForm } from "@/components/dashboard/add-profile-form";
+import { BillingCard } from "@/components/dashboard/billing-card";
 import { EventForm } from "@/components/dashboard/event-form";
 import { RerunAuditButton } from "@/components/dashboard/rerun-audit-button";
 import { StatChart } from "@/components/dashboard/stat-chart";
+import { UpgradeLink } from "@/components/upgrade-link";
 import { Link } from "@/i18n/navigation";
-import { getSession } from "@/lib/auth";
+import { requireSession } from "@/lib/auth";
 import {
+  getActiveSubscription,
   getCreatorStatsSeries,
   getLatestAuditSnapshots,
   listProfileEvents,
@@ -21,6 +24,7 @@ import { planConfig } from "@/lib/plan";
 import { formatSearchVolume } from "@/lib/scoring";
 import {
   addProfileEventAction,
+  cancelSubscriptionAction,
   rerunAuditAction,
   trackProfileAction,
   untrackProfileAction,
@@ -52,17 +56,39 @@ export default async function DashboardPage({
 }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tApp, format, session, raw] = await Promise.all([
+  const [t, tApp, tBilling, format, session, raw] = await Promise.all([
     getTranslations("dashboard"),
     getTranslations("app"),
+    getTranslations("billing"),
     getFormatter(),
-    getSession(),
+    requireSession(),
     searchParams,
   ]);
 
   const config = planConfig(session.plan);
-  const tracked = await listTrackedProfiles(session.userId);
+  const [tracked, subscription] = await Promise.all([
+    listTrackedProfiles(session.userId),
+    getActiveSubscription(session.userId),
+  ]);
   const atLimit = tracked.length >= config.trackedProfileLimit;
+  const upgraded = raw.upgraded !== undefined;
+  const canceled = raw.canceled !== undefined;
+
+  const subscriptionStatusText = subscription
+    ? subscription.status === "trialing" && subscription.trialEnd
+      ? tBilling("statusTrialing", {
+          date: format.dateTime(subscription.trialEnd, { dateStyle: "medium" }),
+        })
+      : subscription.status === "past_due"
+        ? tBilling("statusPastDue")
+        : subscription.currentPeriodEnd
+          ? tBilling("statusActive", {
+              date: format.dateTime(subscription.currentPeriodEnd, {
+                dateStyle: "medium",
+              }),
+            })
+          : ""
+    : "";
 
   const requested = Array.isArray(raw.profile) ? raw.profile[0] : raw.profile;
   const selected =
@@ -124,15 +150,61 @@ export default async function DashboardPage({
             className="text-ink/60 flex items-center gap-3 text-sm"
           >
             {t("limitNotice", { limit: config.trackedProfileLimit })}
-            <Link
-              href="/pricing"
+            <UpgradeLink
+              gate="profile-limit"
+              path="/app/dashboard"
+              userId={session.userId}
+              testId="profile-limit-upgrade"
               className="bg-violet hover:bg-violet/90 rounded-full px-4 py-2 text-xs font-semibold text-white"
             >
               {t("upgradeCta")}
-            </Link>
+            </UpgradeLink>
           </p>
         ) : null}
       </div>
+
+      {upgraded ? (
+        <p
+          data-testid="upgraded-banner"
+          className="bg-lime text-ink mt-6 rounded-xl px-4 py-3 text-sm font-medium"
+        >
+          {t("upgradedBanner")}
+        </p>
+      ) : null}
+
+      {canceled && !subscription ? (
+        <p
+          data-testid="billing-canceled"
+          className="border-ink/10 text-ink/70 mt-6 rounded-xl border px-4 py-3 text-sm font-medium"
+        >
+          {tBilling("canceledNote")}
+        </p>
+      ) : null}
+
+      {subscription ? (
+        <BillingCard
+          action={cancelSubscriptionAction}
+          planLabel={planLabels[session.plan]}
+          statusText={subscriptionStatusText}
+          labels={{
+            title: tBilling("title"),
+            currentPlan: tBilling("currentPlan"),
+            cancel: tBilling("cancel"),
+          }}
+        />
+      ) : null}
+
+      {config.competitorCompare ? (
+        <section
+          data-testid="competitor-compare-stub"
+          className="border-ink/10 mt-6 rounded-2xl border border-dashed p-5"
+        >
+          <p className="text-ink/50 text-xs font-medium uppercase">
+            {t("competitorTitle")}
+          </p>
+          <p className="text-ink/60 mt-1 text-sm">{t("competitorSoon")}</p>
+        </section>
+      ) : null}
 
       {tracked.length === 0 ? (
         <section

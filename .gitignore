@@ -49,3 +49,9 @@ next-env.d.ts
 
 # local redis snapshot
 dump.rdb
+
+# local tool binaries (stripe-mock via: GOBIN=$PWD/.bin go install github.com/stripe/stripe-mock@latest)
+.bin/
+
+# Playwright auth state
+e2e/.auth/

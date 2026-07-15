@@ -8,6 +8,9 @@ interface TrackButtonProps {
   keywordId: string;
   label: string;
   trackedLabel: string;
+  limitLabel: string;
+  /** /pricing?from=keyword-track-limit — attribution rides the URL. */
+  limitHref: string;
   initialTracked: boolean;
 }
 
@@ -16,6 +19,8 @@ export function TrackButton({
   keywordId,
   label,
   trackedLabel,
+  limitLabel,
+  limitHref,
   initialTracked,
 }: TrackButtonProps) {
   const [state, formAction, pending] = useActionState(action, {
@@ -30,6 +35,18 @@ export function TrackButton({
       >
         {trackedLabel}
       </span>
+    );
+  }
+
+  if (state.limited) {
+    return (
+      <a
+        href={limitHref}
+        data-testid="track-limit"
+        className="text-xs font-semibold whitespace-nowrap text-amber-700 underline"
+      >
+        {limitLabel}
+      </a>
     );
   }
 

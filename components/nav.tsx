@@ -26,20 +26,31 @@ export async function Nav() {
           </Link>
         </div>
 
-        {/* Audience toggle — visual stub until the B2B surface ships. */}
-        <div
-          className="border-ink/15 flex rounded-full border p-0.5 text-xs font-medium"
-          title={t("comingSoon")}
-        >
-          <span
-            aria-pressed="true"
-            className="bg-ink rounded-full px-3 py-1 text-white"
+        <div className="flex items-center gap-4">
+          {/* Audience toggle — visual stub until the B2B surface ships. */}
+          <div
+            className="border-ink/15 hidden rounded-full border p-0.5 text-xs font-medium sm:flex"
+            title={t("comingSoon")}
           >
-            {t("creators")}
-          </span>
-          <span aria-pressed="false" className="text-ink/50 px-3 py-1">
-            {t("business")}
-          </span>
+            <span
+              aria-pressed="true"
+              className="bg-ink rounded-full px-3 py-1 text-white"
+            >
+              {t("creators")}
+            </span>
+            <span aria-pressed="false" className="text-ink/50 px-3 py-1">
+              {t("business")}
+            </span>
+          </div>
+          {/* Static link: /signin bounces signed-in users to the dashboard,
+              so the nav never needs the session (pages stay static). */}
+          <Link
+            href="/signin"
+            data-testid="nav-signin"
+            className="bg-ink hover:bg-ink/85 rounded-full px-4 py-1.5 text-sm font-semibold text-white transition"
+          >
+            {t("signIn")}
+          </Link>
         </div>
       </nav>
     </header>

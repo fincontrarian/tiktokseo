@@ -7,6 +7,21 @@ export interface NewLead {
   locale: string;
 }
 
+/**
+ * First login with an email we captured as a lead: mark every matching lead
+ * converted. Called from the auth createUser event; idempotent.
+ */
+export async function convertLeadsForUser(
+  userId: string,
+  email: string,
+): Promise<number> {
+  const result = await prisma.lead.updateMany({
+    where: { email: email.toLowerCase(), convertedUserId: null },
+    data: { convertedUserId: userId, convertedAt: new Date() },
+  });
+  return result.count;
+}
+
 /** Record a marketing lead. Idempotent per (email, source). */
 export async function createLead(lead: NewLead): Promise<void> {
   await prisma.lead.upsert({

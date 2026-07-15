@@ -10,7 +10,11 @@ interface PlanSwitcherProps {
   planLabels: Record<Plan, string>;
 }
 
-/** DEV ONLY — plan simulator until real auth/billing ships. */
+/**
+ * DEV/E2E ONLY — plan simulator. Writes a real subscription row for the
+ * signed-in user (see setDevSubscription), so getUserPlan() stays the
+ * single source of truth. Hidden in production.
+ */
 export function PlanSwitcher({
   action,
   current,

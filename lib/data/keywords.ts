@@ -8,6 +8,8 @@ import type {
   KeywordLocale,
   SortColumn,
 } from "@/lib/keywords/gate";
+import { planConfig } from "@/lib/plan";
+import type { Plan } from "@/lib/plan";
 import { hashtagify } from "@/lib/scoring";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -316,12 +318,23 @@ export async function suggestKeywords(
 export async function trackKeyword(
   userId: string,
   keywordId: string,
-): Promise<void> {
+  plan: Plan,
+): Promise<"tracked" | "limit"> {
+  const limit = planConfig(plan).trackedKeywordLimit;
+  const [already, count] = await Promise.all([
+    prisma.trackedKeyword.findUnique({
+      where: { userId_keywordId: { userId, keywordId } },
+      select: { id: true },
+    }),
+    prisma.trackedKeyword.count({ where: { userId } }),
+  ]);
+  if (!already && count >= limit) return "limit";
   await prisma.trackedKeyword.upsert({
     where: { userId_keywordId: { userId, keywordId } },
     create: { userId, keywordId },
     update: {},
   });
+  return "tracked";
 }
 
 export async function listTrackedKeywordIds(userId: string): Promise<string[]> {

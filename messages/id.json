@@ -5,7 +5,8 @@
     "pricing": "Harga",
     "creators": "Kreator",
     "business": "Bisnis",
-    "comingSoon": "Segera hadir"
+    "comingSoon": "Segera hadir",
+    "signIn": "Masuk"
   },
   "footer": {
     "disclaimer": "Findable adalah platform analitik independen dan tidak berafiliasi dengan, didukung oleh, atau disponsori oleh TikTok maupun ByteDance Ltd.",
@@ -33,7 +34,32 @@
     "metaDescription": "Audit gratis untuk semua kreator. Paket berbayar untuk data terbaru dan pemantauan harian.",
     "title": "Harga",
     "sub": "Audit gratis untuk semua. Data terbaru dan pemantauan harian untuk yang ingin menang.",
-    "comingSoon": "Paket segera hadir. Sementara itu, jalankan audit gratis."
+    "monthly": "Bulanan",
+    "annual": "Tahunan",
+    "annualSave": "Hemat 20%",
+    "perMonth": "/bulan",
+    "billedAnnually": "ditagih {price}/tahun",
+    "freeName": "Gratis",
+    "creatorName": "Creator",
+    "proName": "Pro",
+    "freePrice": "$0",
+    "freeDesc": "Coba alurnya: audit profil, lihat kata kunci teratas, lacak satu profil.",
+    "creatorDesc": "Untuk kreator yang serius dengan peringkat pencarian TikTok.",
+    "proDesc": "Untuk agensi dan pengelola banyak profil.",
+    "trialNote": "Uji coba gratis 7 hari. Batalkan kapan saja.",
+    "freeCta": "Jalankan audit gratis",
+    "paidCta": "Mulai uji coba 7 hari",
+    "mostPopular": "Paling populer",
+    "fProfiles": "{count, plural, other {# profil terlacak}}",
+    "fTopRows": "3 baris kata kunci teratas",
+    "fDelayed": "Data tertunda 30 hari",
+    "fFresh": "Data segar, diperbarui setiap hari",
+    "fUnlimitedRows": "Hasil kata kunci tanpa batas",
+    "fTrackedKeywords": "{count} kata kunci terlacak",
+    "fAuditsFree": "1 audit per hari",
+    "fFullAudits": "Audit penuh",
+    "fCsv": "Ekspor CSV",
+    "fCompetitor": "Perbandingan kompetitor (segera hadir)"
   },
   "audit": {
     "metaTitle": "Audit TikTok SEO gratis — Findable",
@@ -131,7 +157,9 @@
     "pagePrev": "Sebelumnya",
     "pageNext": "Berikutnya",
     "pageInfo": "{from}–{to} dari {total}",
-    "lockedRows": "{count} kata kunci lagi di paket berbayar"
+    "lockedRows": "{count} kata kunci lagi di paket berbayar",
+    "proOnly": "Khusus Pro",
+    "trackLimit": "Batas tercapai ({limit})"
   },
   "dashboard": {
     "metaTitle": "Dasbor",
@@ -168,7 +196,10 @@
     "eventCta": "Catat perubahan",
     "eventInvalid": "Isi tanggal dan label singkat (maks 80 karakter).",
     "eventSuccess": "Tercatat — lihat grafiknya.",
-    "eventsEmpty": "Belum ada perubahan yang dicatat."
+    "eventsEmpty": "Belum ada perubahan yang dicatat.",
+    "upgradedBanner": "Peningkatan selesai — data segar dan semua batas telah terbuka.",
+    "competitorTitle": "Perbandingan kompetitor",
+    "competitorSoon": "Segera hadir: perbandingan kata kunci dan interaksi berdampingan dengan kreator mana pun di indeks kami."
   },
   "publicCreator": {
     "metaTitle": "{name} (@{handle}) Statistik & Analitik TikTok — Pengikut, Tingkat Engagement",
@@ -222,5 +253,33 @@
     "underratedSub": "Tingkat simpan di atas median niche dengan kurang dari {max} pengikut — profil yang akan diuntungkan pencarian berikutnya.",
     "hashtagsTitle": "Hashtag teratas di {niche}",
     "auditCta": "Audit profilmu gratis →"
+  },
+  "auth": {
+    "metaTitle": "Masuk — Findable",
+    "metaDescription": "Masuk ke Findable dengan tautan masuk email atau Google.",
+    "title": "Masuk",
+    "sub": "Kami akan mengirimkan tautan masuk lewat email — tanpa kata sandi.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "kamu@contoh.com",
+    "sendLink": "Kirim tautan masuk",
+    "sentTitle": "Periksa kotak masuk Anda",
+    "sentBody": "Kami telah mengirim tautan masuk. Tautan kedaluwarsa dalam 15 menit.",
+    "invalidEmail": "Alamat email tidak valid.",
+    "authError": "Gagal masuk. Silakan coba lagi.",
+    "or": "atau",
+    "google": "Lanjutkan dengan Google",
+    "signOut": "Keluar"
+  },
+  "billing": {
+    "title": "Tagihan",
+    "currentPlan": "Paket saat ini",
+    "statusTrialing": "Uji coba hingga {date}",
+    "statusActive": "Diperpanjang {date}",
+    "statusPastDue": "Masalah pembayaran — kami mencoba lagi",
+    "cancelEnds": "Dibatalkan {date}",
+    "cancel": "Batalkan langganan",
+    "canceledNote": "Langganan dibatalkan. Anda kembali ke paket gratis.",
+    "upgrade": "Tingkatkan",
+    "checkoutError": "Tidak dapat memulai pembayaran. Silakan coba lagi."
   }
 }

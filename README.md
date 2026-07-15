@@ -40,6 +40,24 @@ audit snapshots — so every feature works with realistic data out of the box.
 > No Docker? Install PostgreSQL 15+ and Redis 7+ yourself, create a `findable`
 > database, then run the same `npm install`, `npm run setup`, `npm run dev`.
 
+### Auth & billing in development
+
+- **Sign-in** is passwordless (email magic link) plus optional Google OAuth
+  (set `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` to enable the button). With
+  no `RESEND_API_KEY` configured, magic links are printed to the dev-server
+  console and can be fetched from `/api/dev/magic-link?email=...` (dev/E2E
+  only — the route 404s in production).
+- **Billing** talks to [stripe-mock](https://github.com/stripe/stripe-mock)
+  locally instead of Stripe. Build it once with
+  `GOBIN=$PWD/.bin go install github.com/stripe/stripe-mock@latest` and the
+  test suites start it themselves; `.env` points `STRIPE_API_BASE` at it.
+  Checkout completion is simulated by a signed webhook through the real
+  `/api/webhooks/stripe` handler, so the production path is exercised end
+  to end. In production, unset `STRIPE_API_BASE` and set real
+  `STRIPE_SECRET_KEY`/`STRIPE_WEBHOOK_SECRET` values.
+- The app-shell **plan switcher** (dev/E2E only) writes a real subscription
+  row, so entitlements always flow through `getUserPlan()`.
+
 ## Scripts
 
 | Command                | What it does                     |

@@ -7,8 +7,9 @@ import {
 import { KeywordSearch } from "@/components/keywords/keyword-search";
 import { Sparkline } from "@/components/keywords/sparkline";
 import { TrackButton } from "@/components/keywords/track-button";
+import { UpgradeLink } from "@/components/upgrade-link";
 import { Link } from "@/i18n/navigation";
-import { getSession } from "@/lib/auth";
+import { requireSession } from "@/lib/auth";
 import {
   listTrackedKeywordIds,
   queryKeywords,
@@ -27,6 +28,7 @@ import type {
   SortColumn,
   SortDirection,
 } from "@/lib/keywords/gate";
+import { planConfig } from "@/lib/plan";
 import { formatSearchVolume } from "@/lib/scoring";
 import { trackKeywordAction } from "./actions";
 
@@ -123,7 +125,7 @@ export default async function KeywordsPage({
   const [t, format, session, raw] = await Promise.all([
     getTranslations("keywords"),
     getFormatter(),
-    getSession(),
+    requireSession(),
     searchParams,
   ]);
 
@@ -144,6 +146,7 @@ export default async function KeywordsPage({
 
   const tracked = new Set(trackedIds);
   const isFree = session.plan === "free";
+  const trackedKeywordLimit = planConfig(session.plan).trackedKeywordLimit;
   const lockedCount = Math.max(0, page.totalCount - page.rows.length);
   const asOfDate = format.dateTime(new Date(page.asOf + "T00:00:00Z"), {
     dateStyle: "medium",
@@ -184,15 +187,35 @@ export default async function KeywordsPage({
           >
             {t("exportCsv")}
           </a>
+        ) : !isFree ? (
+          // Creator tier: export is the pro upsell.
+          <UpgradeLink
+            gate="csv-export"
+            path="/app/keywords"
+            userId={session.userId}
+            testId="export-upsell"
+            className="border-ink/20 text-ink/60 hover:border-violet hover:text-violet rounded-full border border-dashed px-4 py-2 text-sm font-semibold transition"
+          >
+            {t("exportCsv")} — {t("proOnly")}
+          </UpgradeLink>
         ) : null}
       </div>
 
       {isFree ? (
         <p
           data-testid="free-notice"
-          className="bg-lime/40 text-ink mt-6 rounded-xl px-4 py-3 text-sm"
+          className="bg-lime/40 text-ink mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl px-4 py-3 text-sm"
         >
           {t("freeNotice", { date: asOfDate, cap: FREE_ROW_CAP })}
+          <UpgradeLink
+            gate="stale-data"
+            path="/app/keywords"
+            userId={session.userId}
+            testId="stale-data-upgrade"
+            className="text-violet font-semibold hover:underline"
+          >
+            {t("upgradeCta")} →
+          </UpgradeLink>
         </p>
       ) : (
         <p className="text-ink/50 mt-6 text-xs">
@@ -311,6 +334,9 @@ export default async function KeywordsPage({
                       bandLabels={bandLabels}
                       trackLabel={t("track")}
                       trackedLabel={t("tracked")}
+                      trackLimitLabel={t("trackLimit", {
+                        limit: trackedKeywordLimit,
+                      })}
                       isTracked={tracked.has(row.id)}
                     />
                   ))
@@ -331,12 +357,15 @@ export default async function KeywordsPage({
                 <p className="text-ink/60 max-w-md text-sm">
                   {t("upgradeSub")} — {t("lockedRows", { count: lockedCount })}
                 </p>
-                <Link
-                  href="/pricing"
+                <UpgradeLink
+                  gate="keywords-blur"
+                  path="/app/keywords"
+                  userId={session.userId}
+                  testId="upgrade-cta"
                   className="bg-violet hover:bg-violet/90 mt-1 rounded-full px-6 py-2.5 text-sm font-semibold text-white transition"
                 >
                   {t("upgradeCta")}
-                </Link>
+                </UpgradeLink>
               </div>
             ) : null}
           </div>
@@ -452,6 +481,7 @@ function KeywordTableRow({
   bandLabels,
   trackLabel,
   trackedLabel,
+  trackLimitLabel,
   isTracked,
 }: {
   row: KeywordRow;
@@ -461,6 +491,7 @@ function KeywordTableRow({
   bandLabels: Record<"rising" | "flat" | "falling", string>;
   trackLabel: string;
   trackedLabel: string;
+  trackLimitLabel: string;
   isTracked: boolean;
 }) {
   const compChip: Record<Competition, string> = {
@@ -511,6 +542,8 @@ function KeywordTableRow({
           keywordId={row.id}
           label={trackLabel}
           trackedLabel={trackedLabel}
+          limitLabel={trackLimitLabel}
+          limitHref="/pricing?from=keyword-track-limit"
           initialTracked={isTracked}
         />
       </td>

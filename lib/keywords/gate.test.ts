@@ -81,7 +81,7 @@ describe("withRecencyGate — paid plans", () => {
     expect(gated.asOf.toISOString()).toBe("2026-07-06T00:00:00.000Z");
   });
 
-  it("keeps pagination, exact numbers, export, and a 5-minute cache", () => {
+  it("keeps pagination, exact numbers, and a 5-minute cache", () => {
     const gated = withRecencyGate(
       CREATOR,
       query({ page: 3, pageSize: 25 }),
@@ -91,8 +91,12 @@ describe("withRecencyGate — paid plans", () => {
     expect(gated.page).toBe(3);
     expect(gated.pageSize).toBe(25);
     expect(gated.precision).toBe("exact");
-    expect(gated.allowExport).toBe(true);
     expect(gated.cacheTtlSeconds).toBe(PAID_CACHE_TTL_SECONDS);
+  });
+
+  it("CSV export follows planConfig: pro yes, creator no", () => {
+    expect(withRecencyGate(CREATOR, query(), NOW).allowExport).toBe(false);
+    expect(withRecencyGate(PRO, query(), NOW).allowExport).toBe(true);
   });
 
   it("clamps hostile page and pageSize values", () => {

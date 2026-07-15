@@ -6,6 +6,15 @@
 
 export type Plan = "free" | "creator" | "pro";
 
+export interface PlanPricing {
+  /** Monthly price in cents. */
+  monthlyCents: number;
+  /** Annual price in cents (20% off twelve monthly payments). */
+  annualCents: number;
+  /** Free-trial length for this tier. */
+  trialDays: number;
+}
+
 export interface PlanConfig {
   id: Plan;
   /** How many profiles the user can track on the dashboard. */
@@ -18,6 +27,20 @@ export interface PlanConfig {
   keywordRowCap: number | null;
   /** Keyword research: CSV export allowed. */
   csvExport: boolean;
+  /** How many keywords the user can add to rank tracking. */
+  trackedKeywordLimit: number;
+  /** Competitor compare (pro; ships as a stub first). */
+  competitorCompare: boolean;
+  /** null = the free tier (no checkout). */
+  pricing: PlanPricing | null;
+}
+
+export const ANNUAL_DISCOUNT = 0.2;
+export const TRIAL_DAYS = 7;
+
+/** Annual = 12 monthly payments minus the discount, in whole cents. */
+export function annualCents(monthlyCents: number): number {
+  return Math.round(monthlyCents * 12 * (1 - ANNUAL_DISCOUNT));
 }
 
 export const PLAN_CONFIG: Record<Plan, PlanConfig> = {
@@ -28,6 +51,9 @@ export const PLAN_CONFIG: Record<Plan, PlanConfig> = {
     freshKeywordData: false,
     keywordRowCap: 3,
     csvExport: false,
+    trackedKeywordLimit: 3,
+    competitorCompare: false,
+    pricing: null,
   },
   creator: {
     id: "creator",
@@ -35,7 +61,14 @@ export const PLAN_CONFIG: Record<Plan, PlanConfig> = {
     auditRerunsPerDay: 6,
     freshKeywordData: true,
     keywordRowCap: null,
-    csvExport: true,
+    csvExport: false,
+    trackedKeywordLimit: 25,
+    competitorCompare: false,
+    pricing: {
+      monthlyCents: 1200,
+      annualCents: annualCents(1200),
+      trialDays: TRIAL_DAYS,
+    },
   },
   pro: {
     id: "pro",
@@ -44,6 +77,13 @@ export const PLAN_CONFIG: Record<Plan, PlanConfig> = {
     freshKeywordData: true,
     keywordRowCap: null,
     csvExport: true,
+    trackedKeywordLimit: 100,
+    competitorCompare: true,
+    pricing: {
+      monthlyCents: 2900,
+      annualCents: annualCents(2900),
+      trialDays: TRIAL_DAYS,
+    },
   },
 };
 

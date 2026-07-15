@@ -1,12 +1,11 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { getSession, PLAN_COOKIE } from "@/lib/auth";
+import { requireSession } from "@/lib/auth";
 import { trackKeyword } from "@/lib/data";
-import { normalizePlan } from "@/lib/plan";
 
 export interface TrackState {
   tracked: boolean;
+  limited?: boolean;
 }
 
 export async function trackKeywordAction(
@@ -16,14 +15,8 @@ export async function trackKeywordAction(
   const keywordId = String(formData.get("keywordId") ?? "");
   if (!keywordId) return { tracked: false };
 
-  const session = await getSession();
-  await trackKeyword(session.userId, keywordId);
+  const session = await requireSession();
+  const result = await trackKeyword(session.userId, keywordId, session.plan);
+  if (result === "limit") return { tracked: false, limited: true };
   return { tracked: true };
-}
-
-/** DEV ONLY — simulates the plan until real auth/billing ships. */
-export async function setDevPlanAction(formData: FormData): Promise<void> {
-  const plan = normalizePlan(String(formData.get("plan") ?? ""));
-  const jar = await cookies();
-  jar.set(PLAN_COOKIE, plan, { path: "/", sameSite: "lax" });
 }

@@ -4,7 +4,12 @@ import { getLocale } from "next-intl/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "@/i18n/navigation";
 import { loadAudit } from "@/lib/audit";
-import { getSession } from "@/lib/auth";
+import { requireSession } from "@/lib/auth";
+import { stripeClient } from "@/lib/billing/stripe";
+import {
+  getActiveSubscription,
+  markSubscriptionCanceled,
+} from "@/lib/data/billing";
 import {
   addProfileEvent,
   addTrackedProfile,
@@ -28,7 +33,7 @@ export async function trackProfileAction(
   const handle = normalizeHandle(String(formData.get("handle") ?? ""));
   if (!isValidHandle(handle)) return { status: "invalid" };
 
-  const session = await getSession();
+  const session = await requireSession();
   const config = planConfig(session.plan);
   const locale = await getLocale();
 
@@ -50,7 +55,7 @@ export async function trackProfileAction(
 export async function untrackProfileAction(formData: FormData): Promise<void> {
   const creatorId = String(formData.get("creatorId") ?? "");
   if (!creatorId) return;
-  const session = await getSession();
+  const session = await requireSession();
   await removeTrackedProfile(session.userId, creatorId);
   revalidatePath("/", "layout");
 }
@@ -79,7 +84,7 @@ export async function addProfileEventAction(
     return { status: "invalid" };
   }
 
-  const session = await getSession();
+  const session = await requireSession();
   await addProfileEvent({
     userId: session.userId,
     creatorId,
@@ -89,6 +94,37 @@ export async function addProfileEventAction(
   });
   revalidatePath("/", "layout");
   return { status: "success" };
+}
+
+export interface CancelSubscriptionState {
+  status: "idle" | "error";
+}
+
+export async function cancelSubscriptionAction(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _prev: CancelSubscriptionState,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _formData: FormData,
+): Promise<CancelSubscriptionState> {
+  const session = await requireSession();
+  const subscription = await getActiveSubscription(session.userId);
+  if (!subscription) return { status: "error" };
+
+  // Dev-simulator rows never existed in Stripe; everything else is canceled
+  // there first. The webhook will confirm, but we mirror immediately so the
+  // UI (and limits) update without waiting on delivery.
+  if (!subscription.stripeSubscriptionId.startsWith("dev_")) {
+    await stripeClient().subscriptions.cancel(
+      subscription.stripeSubscriptionId,
+    );
+  }
+  await markSubscriptionCanceled(subscription.stripeSubscriptionId);
+  revalidatePath("/", "layout");
+  // The card renders only while a subscription is live, so the confirmation
+  // has to be server-rendered on the refreshed page.
+  const locale = await getLocale();
+  redirect({ href: "/app/dashboard?canceled=1", locale });
+  return { status: "idle" }; // unreachable — redirect throws
 }
 
 export interface RerunAuditState {
@@ -103,7 +139,7 @@ export async function rerunAuditAction(
   const handle = normalizeHandle(String(formData.get("handle") ?? ""));
   if (!creatorId || !isValidHandle(handle)) return { status: "error" };
 
-  const session = await getSession();
+  const session = await requireSession();
   const config = planConfig(session.plan);
 
   // Per-profile daily re-run limit from the plan config (free: 1/day).

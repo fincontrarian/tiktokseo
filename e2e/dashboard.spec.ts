@@ -7,8 +7,14 @@ import type { Page } from "@playwright/test";
 async function untrackAll(page: Page) {
   await page.goto("/app/dashboard");
   while ((await page.getByTestId("untrack-button").count()) > 0) {
-    await page.getByTestId("untrack-button").first().click();
-    await page.waitForTimeout(400);
+    // The chip detaches the moment the action lands; a detached-mid-click
+    // retry would wait forever, so bound the click and re-check the count.
+    await page
+      .getByTestId("untrack-button")
+      .first()
+      .click({ timeout: 3000 })
+      .catch(() => {});
+    await page.waitForTimeout(600);
   }
 }
 
@@ -19,6 +25,14 @@ async function ensureTracked(page: Page, handle: string) {
     await page.getByTestId("add-profile-submit").click();
     await page.waitForURL(`**/app/dashboard?profile=${handle}`);
   }
+}
+
+/** The plan lives in the DB now (subscription rows), so set it explicitly. */
+async function setPlan(page: Page, plan: "free" | "pro") {
+  await page.getByTestId(`plan-${plan}`).click();
+  await expect(page.getByTestId("plan-badge")).toContainText(
+    plan === "free" ? "Free" : "Pro",
+  );
 }
 
 test.describe("tracked-profile dashboard", () => {
@@ -52,8 +66,9 @@ test.describe("tracked-profile dashboard", () => {
   test("unknown handle shows the not-in-index message", async ({ page }) => {
     await ensureTracked(page, "lanmoves");
     // Free plan is at its limit with one profile, so use the pro plan to
-    // reach the add form.
-    await page.getByTestId("plan-pro").click();
+    // reach the add form. setPlan waits for the refreshed shell, so the
+    // form below is the post-refresh one.
+    await setPlan(page, "pro");
     await page.getByTestId("add-profile-input").fill("ghost.handle_404");
     await page.getByTestId("add-profile-submit").click();
     await expect(page.getByTestId("add-profile-error")).toContainText(
@@ -90,6 +105,7 @@ test.describe("tracked-profile dashboard", () => {
     page,
   }) => {
     await ensureTracked(page, "lanmoves");
+    await setPlan(page, "free");
 
     // First click may succeed or already be limited (depending on earlier
     // runs today); a second click is deterministically limited on free.
@@ -106,27 +122,34 @@ test.describe("tracked-profile dashboard", () => {
     page,
   }) => {
     await ensureTracked(page, "lanmoves");
+    await setPlan(page, "free");
 
-    // Free: at limit — upgrade notice instead of the add form.
+    // Free: at limit — upgrade notice (with gate attribution) instead of
+    // the add form.
     await expect(page.getByTestId("limit-notice")).toBeVisible();
+    await expect(page.getByTestId("profile-limit-upgrade")).toHaveAttribute(
+      "href",
+      /\/pricing\?from=profile-limit$/,
+    );
     await expect(page.getByTestId("tracked-count")).toContainText("1 of 1");
     await expect(page.getByTestId("add-profile-input")).toHaveCount(0);
 
     // Pro: limit lifts, a second profile can be tracked.
-    await page.getByTestId("plan-pro").click();
+    await setPlan(page, "pro");
     await expect(page.getByTestId("tracked-count")).toContainText("1 of 5");
     await page.getByTestId("add-profile-input").fill("quietcardio");
     await page.getByTestId("add-profile-submit").click();
     await page.waitForURL("**/app/dashboard?profile=quietcardio");
     await expect(page.getByTestId("profile-chip")).toHaveCount(2);
 
-    // Clean up the second profile so other tests keep a known state.
+    // Clean up so other tests keep a known state.
     await page
       .getByTestId("profile-chip")
       .filter({ hasText: "quietcardio" })
       .getByTestId("untrack-button")
       .click();
     await expect(page.getByTestId("profile-chip")).toHaveCount(1);
+    await setPlan(page, "free");
   });
 
   test("weekly digest cron composes and stores summaries", async ({

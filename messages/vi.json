@@ -5,7 +5,8 @@
     "pricing": "Bảng giá",
     "creators": "Nhà sáng tạo",
     "business": "Doanh nghiệp",
-    "comingSoon": "Sắp ra mắt"
+    "comingSoon": "Sắp ra mắt",
+    "signIn": "Đăng nhập"
   },
   "footer": {
     "disclaimer": "Findable là nền tảng phân tích độc lập, không liên kết, không được chứng thực hay tài trợ bởi TikTok hoặc ByteDance Ltd.",
@@ -33,7 +34,32 @@
     "metaDescription": "Kiểm tra miễn phí cho mọi nhà sáng tạo. Gói trả phí cho dữ liệu mới và theo dõi hằng ngày.",
     "title": "Bảng giá",
     "sub": "Kiểm tra miễn phí cho tất cả. Dữ liệu mới và theo dõi hằng ngày cho ai muốn bứt phá.",
-    "comingSoon": "Các gói sẽ sớm ra mắt. Trong lúc chờ, hãy chạy một bài kiểm tra miễn phí."
+    "monthly": "Hàng tháng",
+    "annual": "Hàng năm",
+    "annualSave": "Tiết kiệm 20%",
+    "perMonth": "/tháng",
+    "billedAnnually": "thanh toán {price}/năm",
+    "freeName": "Miễn phí",
+    "creatorName": "Creator",
+    "proName": "Pro",
+    "freePrice": "0 $",
+    "freeDesc": "Trải nghiệm vòng lặp: kiểm tra hồ sơ, xem từ khóa hàng đầu, theo dõi một hồ sơ.",
+    "creatorDesc": "Dành cho nhà sáng tạo nghiêm túc với thứ hạng tìm kiếm TikTok.",
+    "proDesc": "Dành cho agency và người quản lý nhiều hồ sơ.",
+    "trialNote": "Dùng thử miễn phí 7 ngày. Hủy bất cứ lúc nào.",
+    "freeCta": "Chạy kiểm tra miễn phí",
+    "paidCta": "Bắt đầu dùng thử 7 ngày",
+    "mostPopular": "Phổ biến nhất",
+    "fProfiles": "{count, plural, other {# hồ sơ theo dõi}}",
+    "fTopRows": "3 từ khóa hàng đầu",
+    "fDelayed": "Dữ liệu trễ 30 ngày",
+    "fFresh": "Dữ liệu mới, cập nhật hàng ngày",
+    "fUnlimitedRows": "Kết quả từ khóa không giới hạn",
+    "fTrackedKeywords": "{count} từ khóa theo dõi",
+    "fAuditsFree": "1 lần kiểm tra mỗi ngày",
+    "fFullAudits": "Kiểm tra đầy đủ",
+    "fCsv": "Xuất CSV",
+    "fCompetitor": "So sánh đối thủ (sắp ra mắt)"
   },
   "audit": {
     "metaTitle": "Kiểm tra TikTok SEO miễn phí — Findable",
@@ -131,7 +157,9 @@
     "pagePrev": "Trước",
     "pageNext": "Sau",
     "pageInfo": "{from}–{to} trong {total}",
-    "lockedRows": "Còn {count} từ khóa nữa ở gói trả phí"
+    "lockedRows": "Còn {count} từ khóa nữa ở gói trả phí",
+    "proOnly": "Chỉ gói Pro",
+    "trackLimit": "Đã đạt giới hạn ({limit})"
   },
   "dashboard": {
     "metaTitle": "Bảng điều khiển",
@@ -168,7 +196,10 @@
     "eventCta": "Ghi lại",
     "eventInvalid": "Thêm ngày và nhãn ngắn (tối đa 80 ký tự).",
     "eventSuccess": "Đã ghi — xem biểu đồ nhé.",
-    "eventsEmpty": "Chưa có thay đổi nào được ghi."
+    "eventsEmpty": "Chưa có thay đổi nào được ghi.",
+    "upgradedBanner": "Nâng cấp hoàn tất — dữ liệu mới và toàn bộ giới hạn đã được mở khóa.",
+    "competitorTitle": "So sánh đối thủ",
+    "competitorSoon": "Sắp ra mắt: so sánh từ khóa và mức tương tác trực tiếp với bất kỳ nhà sáng tạo nào trong chỉ mục của chúng tôi."
   },
   "publicCreator": {
     "metaTitle": "{name} (@{handle}) Thống kê & Phân tích TikTok — Người theo dõi, Tỷ lệ tương tác",
@@ -222,5 +253,33 @@
     "underratedSub": "Tỷ lệ lưu trên trung vị ngách với dưới {max} người theo dõi — những hồ sơ mà tìm kiếm sẽ ưu ái tiếp theo.",
     "hashtagsTitle": "Hashtag hàng đầu trong {niche}",
     "auditCta": "Kiểm tra hồ sơ miễn phí →"
+  },
+  "auth": {
+    "metaTitle": "Đăng nhập — Findable",
+    "metaDescription": "Đăng nhập Findable bằng liên kết email hoặc Google.",
+    "title": "Đăng nhập",
+    "sub": "Chúng tôi sẽ gửi liên kết đăng nhập qua email — không cần mật khẩu.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "ban@viduemail.com",
+    "sendLink": "Gửi liên kết đăng nhập",
+    "sentTitle": "Kiểm tra hộp thư của bạn",
+    "sentBody": "Chúng tôi đã gửi liên kết đăng nhập. Liên kết hết hạn sau 15 phút.",
+    "invalidEmail": "Địa chỉ email không hợp lệ.",
+    "authError": "Đăng nhập thất bại. Vui lòng thử lại.",
+    "or": "hoặc",
+    "google": "Tiếp tục với Google",
+    "signOut": "Đăng xuất"
+  },
+  "billing": {
+    "title": "Thanh toán",
+    "currentPlan": "Gói hiện tại",
+    "statusTrialing": "Dùng thử đến {date}",
+    "statusActive": "Gia hạn {date}",
+    "statusPastDue": "Sự cố thanh toán — chúng tôi đang thử lại",
+    "cancelEnds": "Hủy vào {date}",
+    "cancel": "Hủy đăng ký",
+    "canceledNote": "Đã hủy đăng ký. Bạn đã trở lại gói miễn phí.",
+    "upgrade": "Nâng cấp",
+    "checkoutError": "Không thể bắt đầu thanh toán. Vui lòng thử lại."
   }
 }

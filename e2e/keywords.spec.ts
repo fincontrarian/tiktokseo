@@ -1,12 +1,22 @@
 import { expect, test } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 // Data from prisma/seed.ts — run `npx prisma db seed` before this suite.
+
+/** The plan lives in the DB now (subscription rows), so set it explicitly. */
+async function setPlan(page: Page, plan: "free" | "pro") {
+  await page.getByTestId(`plan-${plan}`).click();
+  await expect(page.getByTestId("plan-badge")).toContainText(
+    plan === "free" ? "Free" : "Pro",
+  );
+}
 
 test.describe("keyword research — recency gating", () => {
   test("free plan: 3 delayed rows, banded growth, blurred rest, upgrade CTA, no export", async ({
     page,
   }) => {
     await page.goto("/app/keywords");
+    await setPlan(page, "free");
 
     await expect(page.getByTestId("free-notice")).toBeVisible();
     await expect(page.getByTestId("keyword-row")).toHaveCount(3);
@@ -17,6 +27,11 @@ test.describe("keyword research — recency gating", () => {
     // locked placeholders + upgrade wall, and no export button
     expect(await page.getByTestId("locked-row").count()).toBeGreaterThan(0);
     await expect(page.getByTestId("upgrade-wall")).toBeVisible();
+    // The wall CTA carries gate attribution into /pricing.
+    await expect(page.getByTestId("upgrade-cta")).toHaveAttribute(
+      "href",
+      /\/pricing\?from=keywords-blur$/,
+    );
     await expect(page.getByTestId("export-csv")).toHaveCount(0);
   });
 
@@ -24,8 +39,7 @@ test.describe("keyword research — recency gating", () => {
     page,
   }) => {
     await page.goto("/app/keywords");
-    await page.getByTestId("plan-pro").click();
-    await expect(page.getByTestId("plan-badge")).toContainText("Pro");
+    await setPlan(page, "pro");
 
     await expect(page.getByTestId("keyword-row")).toHaveCount(10);
     await expect(page.getByTestId("locked-row")).toHaveCount(0);
@@ -72,7 +86,8 @@ test.describe("keyword research — recency gating", () => {
 
   test("locale filter switches markets (vi keywords)", async ({ page }) => {
     await page.goto("/app/keywords?kwl=vi");
-    await page.getByTestId("plan-pro").click();
+    await setPlan(page, "pro");
+    await page.goto("/app/keywords?kwl=vi");
     await expect(page.getByTestId("keyword-row").first()).toContainText(
       /bài tập tại nhà|giảm mỡ bụng/,
     );

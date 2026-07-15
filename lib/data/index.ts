@@ -1,8 +1,19 @@
 export { getCreatorAuditData } from "./creators";
 export type { CreatorAuditData } from "./creators";
 export { getNicheBenchmarks } from "./benchmarks";
-export { createLead } from "./leads";
+export { convertLeadsForUser, createLead } from "./leads";
 export type { NewLead } from "./leads";
+export {
+  getActiveSubscription,
+  getStripeCustomerId,
+  getUserPlan,
+  markSubscriptionCanceled,
+  setDevSubscription,
+  upsertSubscription,
+} from "./billing";
+export type { ActiveSubscription, SubscriptionMirror } from "./billing";
+export { logGateEvent } from "./events";
+export type { GateEventInput } from "./events";
 export {
   listTrackedKeywordIds,
   queryKeywords,

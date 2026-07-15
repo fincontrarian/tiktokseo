@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { normalizePlan, PLAN_CONFIG, planConfig, PLANS } from "./plan";
+import {
+  annualCents,
+  normalizePlan,
+  PLAN_CONFIG,
+  planConfig,
+  PLANS,
+  TRIAL_DAYS,
+} from "./plan";
 
 describe("planConfig", () => {
   it("enforces the tracked-profile limits from the spec", () => {
@@ -22,13 +29,43 @@ describe("planConfig", () => {
       keywordRowCap: 3,
       csvExport: false,
     });
+    // Paid tiers see fresh, uncapped data; CSV export is pro-only.
     for (const plan of ["creator", "pro"] as const) {
       expect(planConfig(plan)).toMatchObject({
         freshKeywordData: true,
         keywordRowCap: null,
-        csvExport: true,
       });
     }
+    expect(planConfig("creator").csvExport).toBe(false);
+    expect(planConfig("pro").csvExport).toBe(true);
+  });
+
+  it("caps tracked keywords at 25 (creator) and 100 (pro)", () => {
+    expect(planConfig("creator").trackedKeywordLimit).toBe(25);
+    expect(planConfig("pro").trackedKeywordLimit).toBe(100);
+    expect(planConfig("free").trackedKeywordLimit).toBeLessThan(25);
+  });
+
+  it("reserves competitor compare for pro", () => {
+    expect(planConfig("pro").competitorCompare).toBe(true);
+    expect(planConfig("creator").competitorCompare).toBe(false);
+    expect(planConfig("free").competitorCompare).toBe(false);
+  });
+
+  it("prices creator at $12/mo and pro at $29/mo with a 20% annual discount", () => {
+    expect(planConfig("free").pricing).toBeNull();
+    expect(planConfig("creator").pricing).toEqual({
+      monthlyCents: 1200,
+      annualCents: 11520,
+      trialDays: TRIAL_DAYS,
+    });
+    expect(planConfig("pro").pricing).toEqual({
+      monthlyCents: 2900,
+      annualCents: 27840,
+      trialDays: TRIAL_DAYS,
+    });
+    expect(annualCents(1000)).toBe(9600);
+    expect(TRIAL_DAYS).toBe(7);
   });
 
   it("covers every plan exactly once", () => {

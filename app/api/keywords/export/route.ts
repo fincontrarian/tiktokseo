@@ -24,6 +24,9 @@ const SORT_COLUMNS: SortColumn[] = [
  */
 export async function GET(request: Request) {
   const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+  }
   const url = new URL(request.url);
 
   const localeParam = url.searchParams.get("kwl") ?? "en";
