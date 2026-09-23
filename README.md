@@ -20,11 +20,22 @@ endorsed by, or sponsored by TikTok or ByteDance Ltd.
 
 Prerequisites: Node.js 20+ and Docker (for PostgreSQL + Redis).
 
-### Quickstart (4 commands)
+### One command (Linux/macOS)
+
+```bash
+./scripts/setup-local.sh      # add --with-stripe-mock to also build stripe-mock (needs Go)
+npm run dev                   # http://localhost:3000
+```
+
+The script checks prerequisites, starts PostgreSQL + Redis, creates `.env`
+with a fresh `AUTH_SECRET`, installs dependencies, and migrates + seeds.
+It is safe to re-run and never overwrites an existing `.env`.
+
+### Quickstart (by hand)
 
 ```bash
 docker compose up -d          # starts PostgreSQL + Redis
-cp .env.example .env          # default values already point at the containers
+cp .env.example .env          # then set AUTH_SECRET: openssl rand -base64 32
 npm install                   # deps (+ prisma generate)
 npm run setup                 # applies migrations and seeds demo data
 npm run dev                   # http://localhost:3000
